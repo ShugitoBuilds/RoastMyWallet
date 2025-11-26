@@ -83,7 +83,7 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
   try {
     const ethBalance = await publicClient.getBalance({ address: checksummedAddress });
     console.log(`[getTokenBalances] ETH balance raw: ${ethBalance.toString()}`);
-    
+
     if (ethBalance > BigInt(0)) {
       const formattedBalance = formatUnits(ethBalance, 18);
       console.log(`[getTokenBalances] ETH balance formatted: ${formattedBalance}`);
@@ -105,11 +105,11 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
   for (const rawTokenAddress of COMMON_TOKEN_ADDRESSES) {
     const tokenAddress = safeGetAddress(rawTokenAddress);
     if (!tokenAddress) continue;
-    
+
     try {
       const checksummedWalletAddress = safeGetAddress(address);
       if (!checksummedWalletAddress) continue;
-      
+
       const [balance, decimals, symbol, name] = await Promise.all([
         publicClient.readContract({
           address: tokenAddress,
@@ -132,15 +132,15 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
           abi: ERC20_ABI,
           functionName: "name",
         }),
-      ]);
+      ]) as [bigint, number, string, string];
 
       if (balance > BigInt(0)) {
         tokens.push({
           address: tokenAddress,
-          name: name as string,
-          symbol: symbol as string,
-          balance: formatUnits(balance, decimals as number),
-          decimals: decimals as number,
+          name: name,
+          symbol: symbol,
+          balance: formatUnits(balance, decimals),
+          decimals: decimals,
         });
       }
     } catch (error) {
@@ -161,7 +161,7 @@ export function analyzeTokens(tokens: TokenInfo[]): {
 } {
   const totalTokens = tokens.length;
   const tokenNames = tokens.map((t) => t.symbol).join(", ");
-  
+
   // Simple heuristics for "dead coins" - tokens with very low balances
   const hasDeadCoins = tokens.some(
     (t) => parseFloat(t.balance) < 0.0001 && t.symbol !== "ETH"
