@@ -229,7 +229,7 @@ export function MintButton({ scorecard }: MintButtonProps) {
               </div>
               <div className="flex-1 h-px bg-charcoal-700" />
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
-                step === "approved" || step === "minting" || step === "minted"
+                step === "approved" || step === "minting"
                   ? "bg-amber-500/20 text-amber-400"
                   : "bg-charcoal-800 text-charcoal-500"
               }`}>
