@@ -84,7 +84,7 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
     const ethBalance = await publicClient.getBalance({ address: checksummedAddress });
     console.log(`[getTokenBalances] ETH balance raw: ${ethBalance.toString()}`);
     
-    if (ethBalance > 0n) {
+    if (ethBalance > BigInt(0)) {
       const formattedBalance = formatUnits(ethBalance, 18);
       console.log(`[getTokenBalances] ETH balance formatted: ${formattedBalance}`);
       tokens.push({
@@ -134,7 +134,7 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
         }),
       ]);
 
-      if (balance > 0n) {
+      if (balance > BigInt(0)) {
         tokens.push({
           address: tokenAddress,
           name: name as string,
