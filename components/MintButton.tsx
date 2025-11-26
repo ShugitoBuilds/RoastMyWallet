@@ -96,7 +96,28 @@ export function MintButton({ scorecard }: MintButtonProps) {
     },
   });
 
-  // Check if NFT minting is available
+  // Handle approve success
+  useEffect(() => {
+    if (isApproveSuccess && step === "approving") {
+      setStep("approved");
+    }
+  }, [isApproveSuccess, step]);
+
+  // Handle mint success
+  useEffect(() => {
+    if (isMintSuccess && step === "minting") {
+      setStep("minted");
+      // Refetch total supply to get the new token ID
+      refetchTotalSupply().then((result) => {
+        if (result.data) {
+          // Token ID is totalSupply - 1 (since it was just minted)
+          setMintedTokenId(Number(result.data) - 1);
+        }
+      });
+    }
+  }, [isMintSuccess, step, refetchTotalSupply]);
+
+  // Check if NFT minting is available (after all hooks)
   if (!isNFTMintingAvailable()) {
     return (
       <div className="p-4 rounded-xl bg-charcoal-800/30 border border-charcoal-700/30">
@@ -151,26 +172,6 @@ export function MintButton({ scorecard }: MintButtonProps) {
       setStep("error");
     }
   };
-
-  // Handle approve success
-  useEffect(() => {
-    if (isApproveSuccess && step === "approving") {
-      setStep("approved");
-    }
-  }, [isApproveSuccess, step]);
-  // Handle mint success
-  useEffect(() => {
-    if (isMintSuccess && step === "minting") {
-      setStep("minted");
-      // Refetch total supply to get the new token ID
-      refetchTotalSupply().then((result) => {
-        if (result.data) {
-          // Token ID is totalSupply - 1 (since it was just minted)
-          setMintedTokenId(Number(result.data) - 1);
-        }
-      });
-    }
-  }, [isMintSuccess, step, refetchTotalSupply]);
 
   const isLoading = isApproving || isApproveConfirming || isMinting || isMintConfirming;
 
