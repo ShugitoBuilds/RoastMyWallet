@@ -79,6 +79,28 @@ export default function Home() {
     }
   };
 
+  // Test premium roast (for debugging - no payment required)
+  const handleTestPremium = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/roast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address, type: "premium" }),
+      });
+      const data = await response.json();
+      setRoast(data.roast);
+      setRoastType("premium");
+      if (data.scorecard) {
+        setScorecard(data.scorecard);
+      }
+    } catch (error) {
+      console.error("Error generating roast:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleReset = () => {
     setRoast(null);
     setScorecard(null);
@@ -157,6 +179,15 @@ export default function Home() {
                     >
                       <FlameIcon className="w-5 h-5" />
                       <span>Get Free Roast</span>
+                    </button>
+
+                    {/* Test Premium button (for debugging) */}
+                    <button
+                      onClick={handleTestPremium}
+                      disabled={isLoading}
+                      className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <span>🧪 Test Premium Roast</span>
                     </button>
 
                     {/* Premium section */}

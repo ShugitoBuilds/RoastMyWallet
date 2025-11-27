@@ -1,4 +1,5 @@
 import { getTokenBalances, analyzeTokens } from "./tokens";
+import { EMPTY_WALLET_ROASTS, TOKEN_WALLET_ROASTS } from "./free-roasts";
 
 interface RoastOptions {
   address: string;
@@ -18,6 +19,11 @@ function getCachedRoast(key: string): string | null {
 
 function setCachedRoast(key: string, roast: string): void {
   roastCache.set(key, { roast, timestamp: Date.now() });
+}
+
+// Helper function to simulate AI generation delay (1-3 seconds)
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function getEmptyWalletPrompt(type: "free" | "premium" | "friend"): string {
@@ -55,7 +61,7 @@ function getPromptTemplate(type: "free" | "premium" | "friend", tokenData: strin
     return getEmptyWalletPrompt(type);
   }
 
-  const basePrompt = `You are a ruthless crypto wallet roaster. Analyze this wallet's token holdings on Base blockchain and create a savage, funny roast. Be creative, use crypto slang, and make it entertaining. Keep it under 200 words.
+  const basePrompt = `You are a ruthless crypto wallet roaster. Analyze this wallet's token holdings on Base blockchain and create a savage, funny roast. Be creative, use crypto slang, and make it entertaining.
 
 Wallet Token Holdings:
 ${tokenData}
@@ -70,12 +76,18 @@ Generate a roast that:`;
 - Keep it brief (100-150 words)`;
   } else if (type === "premium") {
     return `${basePrompt}
-- Is EXTREMELY savage and ruthless
-- Deeply analyzes every token holding
-- Points out every mistake and bad decision
-- Uses advanced crypto terminology
-- Is brutally honest and hilarious
-- Make it detailed and comprehensive (150-200 words)`;
+- Is EXTREMELY savage and ruthlessly honest - hold nothing back
+- Analyzes EACH token individually, explaining why each holding is a bad decision
+- Roasts their overall portfolio strategy and risk management
+- Uses advanced crypto terminology (alpha, beta, TVL, impermanent loss, etc.)
+- Questions their entire existence in crypto and financial decision-making
+- Includes specific price action jokes ("bought the top", "exit liquidity", etc.)
+- References current crypto culture and memes
+- Makes predictions about their financial future (all negative and hilarious)
+- Is SO detailed and comprehensive that it hurts to read
+- Length: 250-350 words - make every word count
+- Structure it with paragraphs for readability
+- End with a devastating final blow/prediction`;
   } else {
     return `${basePrompt}
 - Roasts this friend's wallet mercilessly
@@ -114,7 +126,7 @@ async function callAI(prompt: string): Promise<string> {
           },
         ],
         temperature: 0.9,
-        max_tokens: 300,
+        max_tokens: 600, // Increased for longer premium roasts
       }),
     });
 
@@ -205,19 +217,37 @@ export async function generateRoast({ address, type }: RoastOptions): Promise<st
   }
 
   try {
-    // Fetch token balances
+    // Fetch token balances (needed for scorecard generation)
     const tokens = await getTokenBalances(address as `0x${string}`);
-    const analysis = analyzeTokens(tokens);
     const isEmpty = tokens.length === 0;
+
+    // For free roasts, use pre-compiled list (no API call)
+    if (type === "free") {
+      // Simulate AI generation delay (1-3 seconds)
+      const delayMs = 1000 + Math.random() * 2000; // Random delay between 1-3 seconds
+      await delay(delayMs);
+
+      // Select random roast from appropriate list
+      const roasts = isEmpty ? EMPTY_WALLET_ROASTS : TOKEN_WALLET_ROASTS;
+      const roast = roasts[Math.floor(Math.random() * roasts.length)];
+
+      // Cache the result
+      setCachedRoast(cacheKey, roast);
+
+      return roast;
+    }
+
+    // For premium and friend roasts, use AI API
+    const analysis = analyzeTokens(tokens);
 
     // Format token data for prompt
     const tokenData = !isEmpty
       ? tokens
-          .map(
-            (t) =>
-              `- ${t.symbol} (${t.name}): ${parseFloat(t.balance).toFixed(6)}`
-          )
-          .join("\n")
+        .map(
+          (t) =>
+            `- ${t.symbol} (${t.name}): ${parseFloat(t.balance).toFixed(6)}`
+        )
+        .join("\n")
       : "EMPTY WALLET - No tokens found";
 
     const additionalContext = isEmpty ? "" : `
@@ -239,8 +269,8 @@ Analysis:
     return roast;
   } catch (error) {
     console.error("Error generating roast:", error);
-    
-    // Return a random fallback roast
+
+    // Return a random fallback roast (only for premium/friend, free roasts won't fail)
     const fallbacks = FALLBACK_ROASTS.normal;
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }
@@ -262,7 +292,7 @@ export async function generateMiniRoast(address: string): Promise<string> {
     }
 
     const prompt = `Generate ONE savage, funny sentence roasting a crypto wallet that holds: ${tokens.map(t => t.symbol).join(", ")}. Use crypto slang. Max 15 words.`;
-    
+
     const roast = await callAI(prompt);
     return roast.split(".")[0] + "."; // Ensure just one sentence
   } catch (error) {
