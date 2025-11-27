@@ -8,7 +8,7 @@ import { NetworkGuard } from "./NetworkGuard";
 
 // USDC contract address on Base
 const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" as const;
-const PAYMENT_AMOUNT = parseUnits("1", 6); // 1 USDC (6 decimals)
+const PAYMENT_AMOUNT = parseUnits("2", 6); // 2 USDC (6 decimals)
 
 // Icon components
 function CrownIcon({ className }: { className?: string }) {
@@ -46,7 +46,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
   const { isConnected } = useAccount();
   const [targetAddress, setTargetAddress] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
@@ -62,7 +62,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
     }
 
     setIsProcessing(true);
-    
+
     try {
       writeContract({
         address: USDC_ADDRESS,
@@ -94,9 +94,9 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          address: roastAddress, 
-          type: type === "premium" ? "premium" : "friend" 
+        body: JSON.stringify({
+          address: roastAddress,
+          type: type === "premium" ? "premium" : "friend"
         }),
       });
       const data = await response.json();
@@ -116,25 +116,25 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
 
   const isLoading = isPending || isConfirming || isProcessing;
 
-  const config = type === "premium" 
+  const config = type === "premium"
     ? {
-        label: "Premium Roast",
-        description: "Extra savage, deeply personal",
-        icon: CrownIcon,
-        gradient: "from-amber-500 via-flame-500 to-amber-600",
-        hoverGradient: "hover:from-amber-400 hover:via-flame-400 hover:to-amber-500",
-        border: "border-amber-500/20",
-        bg: "bg-charcoal-800/30",
-      }
+      label: "Premium Roast",
+      description: "Extra savage, deeply personal",
+      icon: CrownIcon,
+      gradient: "from-amber-500 via-flame-500 to-amber-600",
+      hoverGradient: "hover:from-amber-400 hover:via-flame-400 hover:to-amber-500",
+      border: "border-amber-500/20",
+      bg: "bg-charcoal-800/30",
+    }
     : {
-        label: "Roast a Friend",
-        description: "Enter their wallet, share the pain",
-        icon: UsersIcon,
-        gradient: "from-flame-500 via-ember-500 to-flame-600",
-        hoverGradient: "hover:from-flame-400 hover:via-ember-400 hover:to-flame-500",
-        border: "border-flame-500/20",
-        bg: "bg-charcoal-800/30",
-      };
+      label: "Roast a Friend",
+      description: "Enter their wallet, share the pain",
+      icon: UsersIcon,
+      gradient: "from-flame-500 via-ember-500 to-flame-600",
+      hoverGradient: "hover:from-flame-400 hover:via-ember-400 hover:to-flame-500",
+      border: "border-flame-500/20",
+      bg: "bg-charcoal-800/30",
+    };
 
   const Icon = config.icon;
 
@@ -153,7 +153,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
             </div>
           </div>
           <div className="text-right">
-            <span className="font-display font-bold text-charcoal-200">$1</span>
+            <span className="font-display font-bold text-charcoal-200">$2</span>
             <span className="text-charcoal-500 text-sm ml-1">USDC</span>
           </div>
         </div>
@@ -187,6 +187,11 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
             <span>Pay & Roast</span>
           )}
         </button>
+
+        {/* Clarification note */}
+        <p className="text-xs text-charcoal-500 text-center leading-relaxed">
+          💡 You will only be charged <span className="text-charcoal-400 font-semibold">$2 USDC</span> for this transaction
+        </p>
       </div>
     </NetworkGuard>
   );
