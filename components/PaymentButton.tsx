@@ -8,7 +8,7 @@ import { NetworkGuard } from "./NetworkGuard";
 
 // USDC contract address on Base
 const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" as const;
-const PAYMENT_AMOUNT = parseUnits("2", 6); // 2 USDC (6 decimals)
+const PAYMENT_AMOUNT = parseUnits("1", 6); // 1 USDC (6 decimals)
 
 // Icon components
 function CrownIcon({ className }: { className?: string }) {
@@ -153,7 +153,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
             </div>
           </div>
           <div className="text-right">
-            <span className="font-display font-bold text-charcoal-200">$2</span>
+            <span className="font-display font-bold text-charcoal-200">$1</span>
             <span className="text-charcoal-500 text-sm ml-1">USDC</span>
           </div>
         </div>
@@ -190,10 +190,9 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
 
         {/* Clarification note */}
         <p className="text-xs text-charcoal-500 text-center leading-relaxed">
-          💡 You will only be charged <span className="text-charcoal-400 font-semibold">$2 USDC</span> for this transaction
+          💡 You will only be charged <span className="text-charcoal-400 font-semibold">$1 USDC</span> for this transaction
         </p>
       </div>
     </NetworkGuard>
   );
 }
-

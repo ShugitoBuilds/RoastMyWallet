@@ -133,7 +133,7 @@ export function MintButton({ scorecard }: MintButtonProps) {
 
   const handleApprove = async () => {
     if (!ROAST_NFT_ADDRESS) return;
-    
+
     setStep("approving");
     setError(null);
 
@@ -159,7 +159,7 @@ export function MintButton({ scorecard }: MintButtonProps) {
 
     try {
       const tokenURI = generateTokenURI(scorecard);
-      
+
       mintNft({
         address: ROAST_NFT_ADDRESS,
         abi: ROAST_NFT_ABI,
@@ -190,7 +190,7 @@ export function MintButton({ scorecard }: MintButtonProps) {
             </div>
           </div>
           <div className="text-right">
-            <span className="font-display font-bold text-charcoal-200">$2</span>
+            <span className="font-display font-bold text-charcoal-200">$1</span>
             <span className="text-charcoal-500 text-sm ml-1">USDC</span>
           </div>
         </div>
@@ -219,20 +219,18 @@ export function MintButton({ scorecard }: MintButtonProps) {
           <>
             {/* Progress steps */}
             <div className="flex items-center gap-2">
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
-                step === "idle" || step === "approving" || isApproveSuccess
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${step === "idle" || step === "approving" || isApproveSuccess
                   ? "bg-amber-500/20 text-amber-400"
                   : "bg-charcoal-800 text-charcoal-500"
-              }`}>
+                }`}>
                 <span className="w-4 h-4 rounded-full bg-current flex items-center justify-center text-charcoal-900 text-[10px]">1</span>
                 Approve USDC
               </div>
               <div className="flex-1 h-px bg-charcoal-700" />
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
-                step === "approved" || step === "minting"
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${step === "approved" || step === "minting"
                   ? "bg-amber-500/20 text-amber-400"
                   : "bg-charcoal-800 text-charcoal-500"
-              }`}>
+                }`}>
                 <span className="w-4 h-4 rounded-full bg-current flex items-center justify-center text-charcoal-900 text-[10px]">2</span>
                 Mint NFT
               </div>

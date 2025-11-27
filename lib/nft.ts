@@ -4,8 +4,8 @@ import { ScorecardData } from "./scorecard";
 export const ROAST_NFT_ADDRESS = process.env.NEXT_PUBLIC_ROAST_NFT_ADDRESS as `0x${string}` | undefined;
 export const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913" as const;
 
-// Mint price: 2 USDC (6 decimals)
-export const NFT_MINT_PRICE = BigInt(2 * 10 ** 6);
+// Mint price: 1 USDC (6 decimals)
+export const NFT_MINT_PRICE = BigInt(1 * 10 ** 6);
 
 // RoastNFT ABI (only the functions we need)
 export const ROAST_NFT_ABI = [
@@ -55,7 +55,7 @@ export const ERC20_APPROVE_ABI = [
 // Generate token URI for the NFT metadata
 export function generateTokenURI(scorecard: ScorecardData): string {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://roastmywallet.xyz";
-  
+
   // Create metadata JSON
   const metadata = {
     name: `Roast Certificate #${scorecard.id}`,
@@ -117,6 +117,3 @@ export function getOpenSeaUrl(tokenId: number): string {
 export function getBaseScanUrl(tokenId: number): string {
   return `https://basescan.org/token/${ROAST_NFT_ADDRESS}?a=${tokenId}`;
 }
-
-
-

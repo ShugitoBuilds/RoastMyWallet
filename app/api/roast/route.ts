@@ -48,9 +48,9 @@ export async function POST(request: NextRequest) {
         roastType as "free" | "premium" | "friend"
       );
 
-      // Save to Supabase if configured and user opted in
-      if (isSupabaseConfigured() && submitToLeaderboard) {
-        await saveRoast(scorecard, true);
+      // Save to Supabase if configured (always save for share functionality)
+      if (isSupabaseConfigured()) {
+        await saveRoast(scorecard, submitToLeaderboard || false);
       }
     } catch (scorecardError) {
       console.error("Error creating scorecard:", scorecardError);
