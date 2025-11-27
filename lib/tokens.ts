@@ -70,7 +70,6 @@ const COMMON_TOKEN_ADDRESSES = [
 export async function getTokenBalances(address: `0x${string}`): Promise<TokenInfo[]> {
   const tokens: TokenInfo[] = [];
 
-  // Ensure address is properly checksummed
   const checksummedAddress = safeGetAddress(address);
   if (!checksummedAddress) {
     console.error(`[getTokenBalances] Invalid wallet address: ${address}`);
@@ -79,29 +78,137 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
 
   console.log(`[getTokenBalances] Fetching balances for address: ${checksummedAddress}`);
 
-  // Get ETH balance with error handling
-  try {
-    const ethBalance = await publicClient.getBalance({ address: checksummedAddress });
-    console.log(`[getTokenBalances] ETH balance raw: ${ethBalance.toString()}`);
+  // Use Alchemy API if available
+  const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 
-    if (ethBalance > BigInt(0)) {
-      const formattedBalance = formatUnits(ethBalance, 18);
-      console.log(`[getTokenBalances] ETH balance formatted: ${formattedBalance}`);
+  if (alchemyApiKey) {
+    try {
+      console.log(`[getTokenBalances] Using Alchemy API`);
+
+      // Get all token balances from Alchemy
+      const response = await fetch(
+        `https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "alchemy_getTokenBalances",
+            params: [checksummedAddress],
+            id: 1,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Alchemy API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (data.result && data.result.tokenBalances) {
+        console.log(`[getTokenBalances] Found ${data.result.tokenBalances.length} tokens from Alchemy`);
+
+        // Fetch metadata for each token with a balance
+        for (const tokenData of data.result.tokenBalances) {
+          const tokenBalance = BigInt(tokenData.tokenBalance || "0");
+
+          if (tokenBalance > BigInt(0)) {
+            try {
+              const tokenAddress = safeGetAddress(tokenData.contractAddress);
+              if (!tokenAddress) continue;
+
+              // Get token metadata from Alchemy
+              const metadataResponse = await fetch(
+                `https://base-mainnet.g.alchemy.com/v2/${alchemyApiKey}`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    jsonrpc: "2.0",
+                    method: "alchemy_getTokenMetadata",
+                    params: [tokenAddress],
+                    id: 1,
+                  }),
+                }
+              );
+
+              const metadata = await metadataResponse.json();
+
+              if (metadata.result) {
+                const decimals = metadata.result.decimals || 18;
+                const symbol = metadata.result.symbol || "UNKNOWN";
+                const name = metadata.result.name || "Unknown Token";
+
+                tokens.push({
+                  address: tokenAddress,
+                  name: name,
+                  symbol: symbol,
+                  balance: formatUnits(tokenBalance, decimals),
+                  decimals: decimals,
+                });
+              }
+            } catch (error) {
+              console.error(`[getTokenBalances] Error fetching metadata:`, error);
+            }
+          }
+        }
+      }
+
+      // Also get ETH balance
+      try {
+        const ethBalance = await publicClient.getBalance({
+          address: checksummedAddress,
+        });
+
+        console.log(`[getTokenBalances] ETH balance raw: ${ethBalance.toString()}`);
+
+        if (ethBalance > 0n) {
+          const formattedBalance = formatUnits(ethBalance, 18);
+          console.log(`[getTokenBalances] ETH balance formatted: ${formattedBalance}`);
+
+          tokens.unshift({
+            address: "0x0000000000000000000000000000000000000000",
+            name: "Ethereum",
+            symbol: "ETH",
+            balance: formattedBalance,
+            decimals: 18,
+          });
+        }
+      } catch (ethError) {
+        console.error(`[getTokenBalances] Error fetching ETH balance:`, ethError);
+      }
+
+      console.log(`[getTokenBalances] Total tokens found: ${tokens.length}`, tokens.map(t => t.symbol));
+      return tokens;
+
+    } catch (error) {
+      console.error(`[getTokenBalances] Alchemy API error, falling back to hardcoded tokens:`, error);
+    }
+  }
+
+  // Fallback: Check ETH balance and common tokens if Alchemy fails
+  console.log(`[getTokenBalances] Using fallback method (hardcoded tokens)`);
+
+  try {
+    const ethBalance = await publicClient.getBalance({
+      address: checksummedAddress,
+    });
+
+    if (ethBalance > 0n) {
       tokens.push({
         address: "0x0000000000000000000000000000000000000000",
         name: "Ethereum",
         symbol: "ETH",
-        balance: formattedBalance,
+        balance: formatUnits(ethBalance, 18),
         decimals: 18,
       });
-    } else {
-      console.log(`[getTokenBalances] ETH balance is zero`);
     }
   } catch (ethError) {
     console.error(`[getTokenBalances] Error fetching ETH balance:`, ethError);
   }
 
-  // Get balances for common tokens
+  // Get balances for common tokens (fallback)
   for (const rawTokenAddress of COMMON_TOKEN_ADDRESSES) {
     const tokenAddress = safeGetAddress(rawTokenAddress);
     if (!tokenAddress) continue;
