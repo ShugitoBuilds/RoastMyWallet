@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ScorecardData } from "@/lib/scorecard";
-import { MintButton } from "./MintButton";
+// import { MintButton } from "./MintButton"; // Disabled for MVP
 
 interface RoastDisplayProps {
   roast: string;
@@ -239,8 +239,8 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         <button
           onClick={handleCopy}
           className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold transition-all duration-300 ${copied
-              ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-              : "bg-charcoal-800/50 text-charcoal-300 border border-charcoal-700/50 hover:bg-charcoal-800 hover:text-white"
+            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+            : "bg-charcoal-800/50 text-charcoal-300 border border-charcoal-700/50 hover:bg-charcoal-800 hover:text-white"
             }`}
         >
           {copied ? (
@@ -291,10 +291,10 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         </div>
       </div>
 
-      {/* Mint NFT Option */}
-      {scorecard && (
+      {/* NFT Minting - Disabled for MVP */}
+      {/* {scorecard && (
         <MintButton scorecard={scorecard} />
-      )}
+      )} */}
     </div>
   );
 }
