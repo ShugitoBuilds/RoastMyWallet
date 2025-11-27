@@ -12,37 +12,37 @@ import { ScorecardData } from "@/lib/scorecard";
 // Flame icon component
 function FlameIcon({ className }: { className?: string }) {
   return (
-    <svg 
-      className={className} 
-      viewBox="0 0 24 24" 
-      fill="none" 
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path 
-        d="M12 2C12 2 8 6 8 10C8 12 9 14 12 14C15 14 16 12 16 10C16 6 12 2 12 2Z" 
+      <path
+        d="M12 2C12 2 8 6 8 10C8 12 9 14 12 14C15 14 16 12 16 10C16 6 12 2 12 2Z"
         fill="url(#flame-gradient-1)"
       />
-      <path 
-        d="M12 8C12 8 10 10 10 12C10 13.5 11 15 12 15C13 15 14 13.5 14 12C14 10 12 8 12 8Z" 
+      <path
+        d="M12 8C12 8 10 10 10 12C10 13.5 11 15 12 15C13 15 14 13.5 14 12C14 10 12 8 12 8Z"
         fill="url(#flame-gradient-2)"
       />
-      <path 
-        d="M8 10C8 6 12 2 12 2C6 4 4 8 4 12C4 16 7 20 12 22C17 20 20 16 20 12C20 8 18 4 12 2C12 2 16 6 16 10C16 12 15 14 12 14C9 14 8 12 8 10Z" 
+      <path
+        d="M8 10C8 6 12 2 12 2C6 4 4 8 4 12C4 16 7 20 12 22C17 20 20 16 20 12C20 8 18 4 12 2C12 2 16 6 16 10C16 12 15 14 12 14C9 14 8 12 8 10Z"
         fill="url(#flame-gradient-3)"
       />
       <defs>
         <linearGradient id="flame-gradient-1" x1="12" y1="2" x2="12" y2="14" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F97316"/>
-          <stop offset="1" stopColor="#DC2626"/>
+          <stop stopColor="#F97316" />
+          <stop offset="1" stopColor="#DC2626" />
         </linearGradient>
         <linearGradient id="flame-gradient-2" x1="12" y1="8" x2="12" y2="15" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FCD34D"/>
-          <stop offset="1" stopColor="#F97316"/>
+          <stop stopColor="#FCD34D" />
+          <stop offset="1" stopColor="#F97316" />
         </linearGradient>
         <linearGradient id="flame-gradient-3" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#F97316"/>
-          <stop offset="0.5" stopColor="#DC2626"/>
-          <stop offset="1" stopColor="#991B1B"/>
+          <stop stopColor="#F97316" />
+          <stop offset="0.5" stopColor="#DC2626" />
+          <stop offset="1" stopColor="#991B1B" />
         </linearGradient>
       </defs>
     </svg>
@@ -95,7 +95,7 @@ export default function Home() {
       {/* Main content */}
       <div className="relative flex-1 flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-xl space-y-10">
-          
+
           {/* Header */}
           <header className="text-center space-y-4 animate-in">
             <div className="inline-flex items-center justify-center gap-3 mb-2">
@@ -103,7 +103,9 @@ export default function Home() {
             </div>
             <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight">
               <span className="text-gradient glow-text">Roast</span>
-              <span className="text-charcoal-100"> My Wallet</span>
+              <span className="text-charcoal-100"> My </span>
+              <span style={{ color: '#1652F0' }}>Base</span>
+              <span className="text-charcoal-100"> Wallet</span>
             </h1>
             <p className="text-charcoal-400 text-lg max-w-md mx-auto leading-relaxed">
               Connect your wallet. Get ruthlessly roasted by AI based on your Base token holdings.
@@ -193,8 +195,8 @@ export default function Home() {
                     </p>
                   </div>
                 ) : (
-                  <RoastDisplay 
-                    roast={roast} 
+                  <RoastDisplay
+                    roast={roast}
                     type={roastType}
                     scorecard={scorecard || undefined}
                     onReset={handleReset}
