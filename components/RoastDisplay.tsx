@@ -117,7 +117,7 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
     const text = scorecard
       ? `${config.label}\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\n${roast}\n\nGet roasted at: ${window.location.origin}`
       : `${config.label}\n\n${roast}\n\nGet roasted at: ${window.location.origin}`;
-    
+
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -127,27 +127,23 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
     const text = scorecard
       ? `I just got roasted by @roastmywallet\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
       : `I just got roasted! Think you can do worse?`;
-    
-    // Use dynamic roast page URL if scorecard is available
-    const shareUrl = scorecard 
-      ? `${window.location.origin}/roast/${scorecard.walletAddress}`
-      : window.location.origin;
-    
+
+    // Always use homepage URL
+    const shareUrl = window.location.origin;
+
     const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
     setShowShareMenu(false);
   };
 
   const handleShareTwitter = () => {
-    // Use dynamic roast page URL if scorecard is available
-    const shareUrl = scorecard 
-      ? `${window.location.origin}/roast/${scorecard.walletAddress}`
-      : window.location.origin;
-    
+    // Always use homepage URL
+    const shareUrl = window.location.origin;
+
     const text = scorecard
       ? `I just got my crypto portfolio roasted\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
       : `I just got my crypto portfolio roasted! Get roasted at`;
-    
+
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
     setShowShareMenu(false);
@@ -190,17 +186,17 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
               Certificate of Portfolio Failure
             </p>
           </div>
-          
+
           {/* Grade Circle */}
           <div className="flex justify-center mb-6">
-            <div 
+            <div
               className="w-24 h-24 rounded-full flex items-center justify-center border-4"
-              style={{ 
+              style={{
                 borderColor: scorecard.gradeColor,
                 backgroundColor: `${scorecard.gradeColor}20`
               }}
             >
-              <span 
+              <span
                 className="text-4xl font-display font-bold"
                 style={{ color: scorecard.gradeColor }}
               >
@@ -231,7 +227,7 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
       <div className={`relative p-6 rounded-xl ${config.bg} border ${config.border} overflow-hidden`}>
         {/* Decorative gradient */}
         <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${config.gradient}`} />
-        
+
         <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
           {roast}
         </p>
@@ -242,11 +238,10 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         {/* Copy button */}
         <button
           onClick={handleCopy}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold transition-all duration-300 ${
-            copied
+          className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold transition-all duration-300 ${copied
               ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
               : "bg-charcoal-800/50 text-charcoal-300 border border-charcoal-700/50 hover:bg-charcoal-800 hover:text-white"
-          }`}
+            }`}
         >
           {copied ? (
             <>
