@@ -43,30 +43,41 @@ const TIME_UNTIL_BROKE = [
   "Yesterday, technically",
 ];
 
-// Calculate portfolio score (0-100)
+// Calculate portfolio score (0-100) - ROAST EDITION (Harsher)
 export function calculatePortfolioScore(tokens: TokenInfo[]): number {
   if (tokens.length === 0) return 0;
 
-  let score = 50; // Base score
+  let score = 40; // Lower base score (started at 50)
 
   const analysis = analyzeTokens(tokens);
 
-  // Positive factors
-  if (tokens.some((t) => t.symbol === "ETH")) score += 15;
-  if (tokens.some((t) => t.symbol === "USDC" || t.symbol === "DAI")) score += 10;
-  if (tokens.length >= 3 && tokens.length <= 10) score += 10; // Diversification
+  // Positive factors (Harder to earn)
+  // Only give points for ETH if it's a meaningful amount (> 0.05)
+  const ethToken = tokens.find((t) => t.symbol === "ETH");
+  if (ethToken && parseFloat(ethToken.balance) > 0.05) score += 10;
 
-  // Negative factors
-  if (analysis.hasMemeCoins) score -= 20;
-  if (analysis.hasDeadCoins) score -= 15;
-  if (tokens.length > 20) score -= 10; // Over-diversified
-  if (tokens.length === 1) score -= 10; // Under-diversified
+  // Only give points for stables if > 50
+  const stableToken = tokens.find((t) => t.symbol === "USDC" || t.symbol === "DAI");
+  if (stableToken && parseFloat(stableToken.balance) > 50) score += 5;
 
-  // Check for "bagholder" patterns
-  const smallBalances = tokens.filter(
-    (t) => parseFloat(t.balance) < 0.001 && t.symbol !== "ETH"
+  // Negative factors (Brutal)
+  if (analysis.hasMemeCoins) score -= 25; // Hated more
+  if (analysis.hasDeadCoins) score -= 20;
+
+  // "Diworsification" penalty
+  if (tokens.length > 5) score -= 10;
+  if (tokens.length > 15) score -= 15;
+
+  // Check for "dust" (tiny balances) - The "Dust Collector" penalty
+  // Most users have dust, so this will hammer their score
+  const dustTokens = tokens.filter(
+    (t) => parseFloat(t.balance) < 0.01 && t.symbol !== "ETH" // Stricter dust definition
   );
-  if (smallBalances.length > 3) score -= 15;
+  if (dustTokens.length > 2) score -= 15;
+  if (dustTokens.length > 5) score -= 20;
+
+  // ETH Dust penalty (if they hold ETH but it's tiny)
+  if (ethToken && parseFloat(ethToken.balance) < 0.01) score -= 10;
 
   // Clamp score
   return Math.max(0, Math.min(100, score));
