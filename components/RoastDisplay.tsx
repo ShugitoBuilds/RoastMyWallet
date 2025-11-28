@@ -226,6 +226,26 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         </div>
       )}
 
+      {/* Detected Tokens (for debugging/transparency) */}
+      {scorecard && scorecard.tokenCount > 0 && (
+        <details className="p-4 rounded-xl bg-charcoal-800/20 border border-charcoal-700/30">
+          <summary className="cursor-pointer select-none text-sm font-semibold text-charcoal-400 hover:text-charcoal-300 transition-colors flex items-center gap-2">
+            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+            </svg>
+            Detected Tokens ({scorecard.tokenCount})
+          </summary>
+          <div className="mt-3 space-y-1 text-xs text-charcoal-500">
+            {scorecard.tokenSummary?.split(', ').map((token, idx) => (
+              <div key={idx} className="flex items-center gap-2 py-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></div>
+                <span>{token}</span>
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
+
       {/* Roast content */}
       <div className={`relative p-6 rounded-xl ${config.bg} border ${config.border} overflow-hidden`}>
         {/* Decorative gradient */}

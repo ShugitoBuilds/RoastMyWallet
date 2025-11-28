@@ -184,7 +184,8 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
         console.error(`[getTokenBalances] Error fetching ETH balance:`, ethError);
       }
 
-      console.log(`[getTokenBalances] Total tokens found: ${tokens.length}`, tokens.map(t => t.symbol));
+      console.info(`[getTokenBalances] Total tokens found: ${tokens.length}`, tokens.map(t => t.symbol));
+      console.info(`[getTokenBalances] Detailed token list:`, tokens.map(t => `${t.symbol} (${t.name}): ${t.balance}`));
       return tokens;
 
     } catch (error) {
