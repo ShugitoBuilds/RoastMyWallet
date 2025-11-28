@@ -4,9 +4,9 @@ import { getRoastById } from "@/lib/supabase";
 import { getOneLiner } from "@/lib/share";
 import { RoastPageClient } from "./RoastPageClient";
 
-// Use VERCEL_URL if available (preview/production), otherwise fallback to localhost or configured URL
+// Use VERCEL_URL if available (preview/production), otherwise fallback to configured URL or localhost
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://roastmywallet.xyz");
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://roastmybasewallet.vercel.app");
 
 interface PageProps {
     params: Promise<{ id: string }>;
