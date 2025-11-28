@@ -6,13 +6,13 @@ Copy these environment variables into your Vercel project settings.
 
 ### 1. OnchainKit API Key
 ```
-NEXT_PUBLIC_ONCHAINKIT_API_KEY=Zd4/k4uxtAzzM+EAnnahEdftb15p4XcUKlhl5EbnizCaPSbScC6znWJRxL1oYW4ZenQ8+PCO+UJB1PGdp5HXIg==
+NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_onchainkit_api_key_here
 ```
 **Where to get it:** https://portal.cdp.coinbase.com/
 
 ### 2. Base URL
 ```
-NEXT_PUBLIC_BASE_URL=https://roast-my-wallet-sigma.vercel.app/
+NEXT_PUBLIC_BASE_URL=https://your-app-url.vercel.app/
 ```
 **Note:** Update this AFTER your first deployment with your actual Vercel URL
 
@@ -31,7 +31,7 @@ NEXT_PUBLIC_PAYMENT_WALLET_ADDRESS=0x115F7cD31F20aBBdf013c37FE04341f55Ab3c262
 ## AI Provider (Gemini)
 
 ```
-AI_API_KEY=AIzaSyDl6OFi5WqpsbO7Wsya1WSHcM3AmAeR8Pw
+AI_API_KEY=your_gemini_api_key_here
 AI_SERVICE=gemini
 ```
 **Where to get it:** https://makersuite.google.com/app/apikey
@@ -56,8 +56,8 @@ ALCHEMY_API_KEY=your_alchemy_api_key_here
 ## Supabase (Optional - for leaderboard and roast storage)
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=https://umjxdkdbhkkcarpitkku.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtanhka2RiaGtrY2FycGl0a2t1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMjkxNTksImV4cCI6MjA3OTYwNTE1OX0.2am1LZBxemMqKiXsI55quEYbIM1v_1Z-UFUbOK5367s
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ## Optional Variables
