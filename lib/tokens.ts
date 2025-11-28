@@ -82,9 +82,9 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
   const alchemyApiKey = process.env.ALCHEMY_API_KEY;
 
   // Debug logging to diagnose environment variable loading
-  console.log(`[DEBUG] ALCHEMY_API_KEY exists: ${!!alchemyApiKey}`);
-  console.log(`[DEBUG] ALCHEMY_API_KEY length: ${alchemyApiKey?.length || 0}`);
-  console.log(`[DEBUG] ALCHEMY_API_KEY first 10 chars: ${alchemyApiKey ? alchemyApiKey.substring(0, 10) : 'UNDEFINED'}`);
+  console.info(`[DEBUG] ALCHEMY_API_KEY exists: ${!!alchemyApiKey}`);
+  console.info(`[DEBUG] ALCHEMY_API_KEY length: ${alchemyApiKey?.length || 0}`);
+  console.info(`[DEBUG] ALCHEMY_API_KEY first 10 chars: ${alchemyApiKey ? alchemyApiKey.substring(0, 10) : 'UNDEFINED'}`);
 
   if (alchemyApiKey) {
     try {

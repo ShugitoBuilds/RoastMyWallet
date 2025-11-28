@@ -57,10 +57,9 @@ NEXT_PUBLIC_ROAST_NFT_ADDRESS=0x16BB20cFD193D7803F3d914821d6afC1cB79f5A8
 # Payment
 NEXT_PUBLIC_PAYMENT_WALLET_ADDRESS=your_payment_wallet
 
-# AI Provider (choose one)
-OPENAI_API_KEY=your_openai_key
-# OR
-ANTHROPIC_API_KEY=your_anthropic_key
+# AI Provider (Gemini)
+AI_API_KEY=your_gemini_api_key
+AI_SERVICE=gemini
 
 # Supabase (optional, for leaderboard)
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url

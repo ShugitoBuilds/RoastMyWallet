@@ -62,15 +62,10 @@ First, let's make sure your code is ready to push to GitHub:
    NEXT_PUBLIC_PAYMENT_WALLET_ADDRESS=your_payment_wallet_address
    ```
 
-   **AI Provider (choose ONE):**
+   **AI Provider (Gemini):**
    ```
-   OPENAI_API_KEY=your_openai_key
-   AI_SERVICE=openai
-   ```
-   OR
-   ```
-   ANTHROPIC_API_KEY=your_anthropic_key
-   AI_SERVICE=anthropic
+   AI_API_KEY=your_gemini_api_key
+   AI_SERVICE=gemini
    ```
 
    **Supabase (for leaderboard and roast storage):**
@@ -200,8 +195,8 @@ Before deploying, make sure you have all these values:
 - [ ] `NEXT_PUBLIC_BASE_URL` - Will be your Vercel URL (update after first deploy)
 - [ ] `NEXT_PUBLIC_ROAST_NFT_ADDRESS` - `0x16BB20cFD193D7803F3d914821d6afC1cB79f5A8`
 - [ ] `NEXT_PUBLIC_PAYMENT_WALLET_ADDRESS` - Your Base wallet address
-- [ ] `OPENAI_API_KEY` OR `ANTHROPIC_API_KEY` - Your AI provider key
-- [ ] `AI_SERVICE` - `openai` or `anthropic`
+- [ ] `AI_API_KEY` - Your Gemini API key
+- [ ] `AI_SERVICE` - `gemini`
 - [ ] `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
 - [ ] `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anon key
 
