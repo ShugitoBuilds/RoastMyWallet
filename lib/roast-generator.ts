@@ -163,7 +163,7 @@ async function callAI(prompt: string): Promise<string> {
     const data = await response.json();
     return data.content[0].text.trim();
   } else if (aiService === "gemini") {
-    const model = "gemini-1.5-pro";
+    const model = "gemini-3-pro-preview";
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
@@ -179,19 +179,6 @@ async function callAI(prompt: string): Promise<string> {
     if (!response.ok) {
       const errorBody = await response.text();
       console.error(`[Gemini API] Status: ${response.status}, Body: ${errorBody}`);
-
-      // Debug: List available models if 404
-      if (response.status === 404) {
-        try {
-          const listModelsUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-          const listResponse = await fetch(listModelsUrl);
-          const listData = await listResponse.json();
-          console.error("[Gemini API] Available models:", JSON.stringify(listData, null, 2));
-        } catch (e) {
-          console.error("[Gemini API] Failed to list models:", e);
-        }
-      }
-
       throw new Error(`Gemini API error: ${response.statusText}`);
     }
 
