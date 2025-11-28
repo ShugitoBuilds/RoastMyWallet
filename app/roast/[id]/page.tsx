@@ -1,9 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getRoastById } from "@/lib/supabase";
+import { getOneLiner } from "@/lib/share";
 import { RoastPageClient } from "./RoastPageClient";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://roastmywallet.xyz";
+// Use VERCEL_URL if available (preview/production), otherwise fallback to localhost or configured URL
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://roastmywallet.xyz");
 
 interface PageProps {
     params: Promise<{ id: string }>;
@@ -23,6 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const title = `Roast My Wallet - Grade: ${roast.grade}`;
     const description = `${roast.roast_text.slice(0, 150)}...`;
+    const hook = getOneLiner(roast.roast_text);
 
     // Generate OG image URL with scorecard data
     const ogImageParams = new URLSearchParams({
@@ -33,6 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         timeBroke: roast.time_until_broke,
         tokenCount: roast.token_count.toString(),
         roastType: roast.roast_type,
+        hook: hook, // Pass the viral hook
     });
 
     const ogImageUrl = `${BASE_URL}/api/scorecard/${roast.id}?${ogImageParams.toString()}`;

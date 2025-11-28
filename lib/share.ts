@@ -47,7 +47,7 @@ Think you can do worse? Get roasted:`;
 // Generate Twitter/X share URL with dynamic roast page
 export function getTwitterShareUrl(scorecard: ScorecardData): string {
   const roastPageUrl = getRoastPageUrl(scorecard);
-  
+
   const text = `I just got my crypto portfolio roasted 🔥
 
 Grade: ${scorecard.grade}
@@ -85,6 +85,21 @@ export function getWebShareData(scorecard: ScorecardData): ShareData {
     text: `I got a ${scorecard.grade} on my crypto portfolio! ${scorecard.timeUntilBroke} until I'm broke. Get roasted:`,
     url: `${BASE_URL}?ref=share`,
   };
+}
+
+// Extract a punchy one-liner from the roast text
+export function getOneLiner(text: string): string {
+  if (!text) return "My portfolio just got absolutely destroyed.";
+
+  // Try to get the first punchy sentence
+  const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 0);
+  const firstSentence = sentences[0]?.trim();
+
+  // If first sentence is short enough, use it. Otherwise use a generic hook.
+  if (firstSentence && firstSentence.length < 100) {
+    return `"${firstSentence}..."`;
+  }
+  return "My portfolio just got absolutely destroyed.";
 }
 
 

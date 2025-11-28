@@ -28,6 +28,7 @@ export async function GET(
   const timeBroke = searchParams.get("timeBroke") || "Soon™";
   const tokenCount = searchParams.get("tokenCount") || "0";
   const roastType = searchParams.get("roastType") || "free";
+  const hook = searchParams.get("hook");
 
   const isPremium = roastType === "premium";
 
@@ -99,17 +100,21 @@ export async function GET(
           )}
         </div>
 
-        {/* Certificate Title */}
+        {/* Viral Hook (or fallback title) */}
         <div
           style={{
-            fontSize: "20px",
-            color: "#71717a",
+            fontSize: hook ? "32px" : "20px",
+            fontWeight: hook ? "bold" : "normal",
+            color: hook ? "#e4e4e7" : "#71717a",
             marginBottom: "30px",
-            textTransform: "uppercase",
-            letterSpacing: "4px",
+            textAlign: "center",
+            maxWidth: "900px",
+            lineHeight: 1.4,
+            textTransform: hook ? "none" : "uppercase",
+            letterSpacing: hook ? "normal" : "4px",
           }}
         >
-          Certificate of Portfolio Failure
+          {hook || "Certificate of Portfolio Failure"}
         </div>
 
         {/* Main Card */}
