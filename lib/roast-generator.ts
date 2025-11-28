@@ -163,7 +163,7 @@ async function callAI(prompt: string): Promise<string> {
     const data = await response.json();
     return data.content[0].text.trim();
   } else if (aiService === "gemini") {
-    const model = "gemini-3-pro-preview";
+    const model = "gemini-2.0-flash";
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
