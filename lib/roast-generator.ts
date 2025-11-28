@@ -185,6 +185,8 @@ async function callAI(prompt: string): Promise<string> {
     );
 
     if (!response.ok) {
+      const errorBody = await response.text();
+      console.error(`[Gemini API] Status: ${response.status}, Body: ${errorBody}`);
       throw new Error(`Gemini API error: ${response.statusText}`);
     }
 
