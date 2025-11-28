@@ -123,10 +123,23 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const getOneLiner = (text: string) => {
+    // Try to get the first punchy sentence
+    const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 0);
+    const firstSentence = sentences[0]?.trim();
+
+    // If first sentence is short enough, use it. Otherwise use a generic hook.
+    if (firstSentence && firstSentence.length < 100) {
+      return `"${firstSentence}..."`;
+    }
+    return "My portfolio just got absolutely destroyed.";
+  };
+
   const handleShareWarpcast = () => {
+    const oneLiner = getOneLiner(roast);
     const text = scorecard
-      ? `I just got roasted by @roastmywallet\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
-      : `I just got roasted! Think you can do worse?`;
+      ? `${oneLiner}\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
+      : `${oneLiner}\n\nThink you can do worse?`;
 
     // Always use homepage URL
     const shareUrl = window.location.origin;
@@ -139,10 +152,11 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
   const handleShareTwitter = () => {
     // Always use homepage URL
     const shareUrl = window.location.origin;
+    const oneLiner = getOneLiner(roast);
 
     const text = scorecard
-      ? `I just got my crypto portfolio roasted\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
-      : `I just got my crypto portfolio roasted! Get roasted at`;
+      ? `${oneLiner}\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
+      : `${oneLiner}\n\nGet roasted at`;
 
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
