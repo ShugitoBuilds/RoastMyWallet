@@ -144,14 +144,25 @@ export async function getTokenBalances(address: `0x${string}`): Promise<TokenInf
                 const decimals = metadata.result.decimals || 18;
                 const symbol = metadata.result.symbol || "UNKNOWN";
                 const name = metadata.result.name || "Unknown Token";
+                const formattedBalance = formatUnits(tokenBalance, decimals);
+                const balanceNumber = parseFloat(formattedBalance);
 
-                tokens.push({
-                  address: tokenAddress,
-                  name: name,
-                  symbol: symbol,
-                  balance: formatUnits(tokenBalance, decimals),
-                  decimals: decimals,
-                });
+                // Filter out dust/spam tokens (< 0.0001 balance)
+                // Always include major tokens regardless of balance
+                const majorTokens = ['ETH', 'WETH', 'USDC', 'USDT', 'DAI'];
+                const MINIMUM_BALANCE = 0.0001;
+
+                if (balanceNumber >= MINIMUM_BALANCE || majorTokens.includes(symbol)) {
+                  tokens.push({
+                    address: tokenAddress,
+                    name: name,
+                    symbol: symbol,
+                    balance: formattedBalance,
+                    decimals: decimals,
+                  });
+                } else {
+                  console.info(`[getTokenBalances] Filtered out dust token: ${symbol} (${balanceNumber})`);
+                }
               }
             } catch (error) {
               console.error(`[getTokenBalances] Error fetching metadata:`, error);
