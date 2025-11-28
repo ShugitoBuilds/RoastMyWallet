@@ -11,6 +11,7 @@ export interface ScorecardData {
   roastText: string;
   roastType: "free" | "premium" | "friend";
   tokenCount: number;
+  tokenSummary?: string; // Comma-separated list of token symbols
   hasMemeCoins: boolean;
   hasDeadCoins: boolean;
   createdAt: Date;
@@ -87,7 +88,7 @@ export function findTopBagholder(tokens: TokenInfo[]): string {
 
   // Prioritize meme coins and small balances
   const memePatterns = /PEPE|DOGE|SHIB|FLOKI|BONK|WIF|MEME|INU|ELON|MOON|SAFE/i;
-  
+
   const memeCoin = tokens.find((t) => memePatterns.test(t.symbol));
   if (memeCoin) return memeCoin.symbol;
 
@@ -147,6 +148,7 @@ export function createScorecard(
     roastText,
     roastType,
     tokenCount: tokens.length,
+    tokenSummary: analysis.tokenSummary, // Add token list for display
     hasMemeCoins: analysis.hasMemeCoins,
     hasDeadCoins: analysis.hasDeadCoins,
     createdAt: new Date(),

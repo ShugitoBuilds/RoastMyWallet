@@ -236,7 +236,7 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
             Detected Tokens ({scorecard.tokenCount})
           </summary>
           <div className="mt-3 space-y-1 text-xs text-charcoal-500">
-            {scorecard.tokenSummary?.split(', ').map((token, idx) => (
+            {scorecard.tokenSummary?.split(', ').map((token: string, idx: number) => (
               <div key={idx} className="flex items-center gap-2 py-1">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></div>
                 <span>{token}</span>
