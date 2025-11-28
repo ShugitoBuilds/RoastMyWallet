@@ -141,8 +141,10 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
       ? `${oneLiner}\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
       : `${oneLiner}\n\nThink you can do worse?`;
 
-    // Always use homepage URL
-    const shareUrl = window.location.origin;
+    // Use roast ID for permalink if available, otherwise homepage
+    const shareUrl = scorecard?.id
+      ? `${window.location.origin}/roast/${scorecard.id}`
+      : window.location.origin;
 
     const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
@@ -150,8 +152,11 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
   };
 
   const handleShareTwitter = () => {
-    // Always use homepage URL
-    const shareUrl = window.location.origin;
+    // Use roast ID for permalink if available, otherwise homepage
+    const shareUrl = scorecard?.id
+      ? `${window.location.origin}/roast/${scorecard.id}`
+      : window.location.origin;
+
     const oneLiner = getOneLiner(roast);
 
     const text = scorecard
