@@ -104,6 +104,28 @@ export default function Home() {
     }
   };
 
+  // Test friend roast (for debugging - no payment required)
+  const handleTestFriend = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/roast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address, type: "friend" }),
+      });
+      const data = await response.json();
+      setRoast(data.roast);
+      setRoastType("friend");
+      if (data.scorecard) {
+        setScorecard(data.scorecard);
+      }
+    } catch (error) {
+      console.error("Error generating roast:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleReset = () => {
     setRoast(null);
     setScorecard(null);
@@ -133,7 +155,7 @@ export default function Home() {
               <span className="text-charcoal-100"> Wallet</span>
             </h1>
             <p className="text-charcoal-400 text-lg max-w-md mx-auto leading-relaxed">
-              Connect your wallet. Get ruthlessly roasted by AI based on your Base token holdings.
+              Connect your wallet securely. Get ruthlessly roasted based on your Base wallet holdings!
             </p>
           </header>
 
@@ -186,13 +208,22 @@ export default function Home() {
 
                     {/* Test Premium button (Admin Only) */}
                     {isAdmin && (
-                      <button
-                        onClick={handleTestPremium}
-                        disabled={isLoading}
-                        className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <span>🧪 Test Premium Roast</span>
-                      </button>
+                      <div className="space-y-2">
+                        <button
+                          onClick={handleTestPremium}
+                          disabled={isLoading}
+                          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <span>🧪 Test Premium Roast</span>
+                        </button>
+                        <button
+                          onClick={handleTestFriend}
+                          disabled={isLoading}
+                          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-flame-400 bg-flame-500/10 border border-flame-500/30 hover:bg-flame-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <span>🧪 Test Friend Roast</span>
+                        </button>
+                      </div>
                     )}
 
                     {/* Premium section */}
@@ -227,7 +258,7 @@ export default function Home() {
                     </div>
 
                     <p className="text-center text-charcoal-600 text-xs">
-                      You will only be charged $1 USDC for any transaction
+                      💡 You will only be charged $1 USDC for any transaction
                     </p>
                   </div>
                 ) : (
@@ -249,7 +280,6 @@ export default function Home() {
 
           {/* Footer */}
           <footer className="text-center text-charcoal-600 text-xs animate-in space-y-2" style={{ animationDelay: "0.3s" }}>
-            <p className="text-sm">Built on Base. Powered by AI.</p>
             <p>Not financial advice. For entertainment only. You are responsible for your own keys.</p>
           </footer>
         </div>

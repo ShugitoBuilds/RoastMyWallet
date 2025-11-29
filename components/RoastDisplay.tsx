@@ -135,11 +135,23 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
     return "My portfolio just got absolutely destroyed.";
   };
 
+  const getGradeEmoji = (grade: string) => {
+    if (grade.startsWith("A")) return "🔥";
+    if (grade.startsWith("B")) return "👍";
+    if (grade.startsWith("C")) return "😐";
+    if (grade.startsWith("D")) return "😬";
+    return "💀";
+  };
+
   const handleShareWarpcast = () => {
     const oneLiner = getOneLiner(roast);
+    const gradeEmoji = scorecard ? getGradeEmoji(scorecard.grade) : "💀";
+
+    const intro = "I just got my wallet ruthlessly roasted 💀";
+
     const text = scorecard
-      ? `${oneLiner}\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
-      : `${oneLiner}\n\nThink you can do worse?`;
+      ? `${intro}\n\n${oneLiner}\n\nGrade: ${scorecard.grade} ${gradeEmoji}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
+      : `${intro}\n\n${oneLiner}\n\nThink you can do worse?`;
 
     // Use roast ID for permalink if available, otherwise homepage
     const shareUrl = scorecard?.id
@@ -158,10 +170,13 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
       : window.location.origin;
 
     const oneLiner = getOneLiner(roast);
+    const gradeEmoji = scorecard ? getGradeEmoji(scorecard.grade) : "💀";
+
+    const intro = "I just got my wallet ruthlessly roasted 💀";
 
     const text = scorecard
-      ? `${oneLiner}\n\nGrade: ${scorecard.grade}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
-      : `${oneLiner}\n\nGet roasted at`;
+      ? `${intro}\n\n${oneLiner}\n\nGrade: ${scorecard.grade} ${gradeEmoji}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
+      : `${intro}\n\n${oneLiner}\n\nGet roasted at`;
 
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
