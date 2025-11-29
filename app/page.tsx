@@ -221,7 +221,7 @@ export default function Home() {
               <span className="text-charcoal-100"> Wallet</span>
             </h1>
             <p className="text-charcoal-400 text-lg max-w-md mx-auto leading-relaxed">
-              Connect your wallet securely. Get ruthlessly roasted based on your Base wallet holdings!
+              Connect your wallet securely, and get ruthlessly roasted based on your Base wallet holdings!
             </p>
           </header>
 
@@ -306,16 +306,7 @@ export default function Home() {
                       )}
 
                       {/* Premium section */}
-                      <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-charcoal-800" />
-                        </div>
-                        <div className="relative flex justify-center">
-                          <span className="px-4 bg-charcoal-900 text-flame-400 text-sm font-bold uppercase tracking-wider animate-pulse">
-                            Premium Roasts
-                          </span>
-                        </div>
-                      </div>
+
 
                       <div className="grid gap-4">
                         <PaymentButton
@@ -337,7 +328,7 @@ export default function Home() {
                       </div>
 
                       <p className="text-center text-charcoal-600 text-xs">
-                        💡 You will only be charged $1 USDC for any transaction
+                        💡 You will only be charged $1 USDC for any transactions.
                       </p>
                     </div>
                   ) : (
