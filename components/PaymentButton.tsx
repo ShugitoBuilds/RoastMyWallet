@@ -244,7 +244,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
             disabled={isLoading || (type === "friend" && !targetAddress)}
             className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-white 
             bg-gradient-to-r ${config.gradient} ${config.hoverGradient}
-            transition-all duration-300 hover:shadow-glow hover:scale-[1.01] active:scale-[0.99] animate-pulse-slow
+            transition-all duration-300 hover:shadow-glow hover:scale-[1.01] active:scale-[0.99]
             disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none`}
           >
             {isLoading ? (
@@ -253,7 +253,9 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
                 <span>Processing...</span>
               </>
             ) : (
-              <span>{type === "premium" ? "Get Savage Roast" : "Roast Them"}</span>
+              <span className={type === "premium" || (type === "friend" && targetAddress) ? "animate-pulse" : ""}>
+                {type === "premium" ? "Get Savage Roast" : "Roast Them"}
+              </span>
             )}
           </button>
 

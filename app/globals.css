@@ -107,6 +107,27 @@
     width: 100%;
   }
 
+  @keyframes fire-flicker {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5);
+    }
+
+    50% {
+      opacity: 0.4;
+      transform: translateY(-20px) scale(1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-40px) scale(0.5);
+    }
+  }
+
+  .animate-fire-flicker {
+    animation: fire-flicker linear infinite;
+  }
+
   .text-shimmer {
     background: linear-gradient(to right,
         #f97316 20%,

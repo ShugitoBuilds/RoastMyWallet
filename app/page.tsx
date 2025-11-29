@@ -111,6 +111,7 @@ function SocialFireIcon({ className }: { className?: string }) {
 }
 
 import { AdminAccess } from "@/components/AdminAccess";
+import { BackgroundFlames } from "@/components/BackgroundFlames";
 
 export default function Home() {
   const { isConnected, address } = useAccount();
@@ -203,6 +204,7 @@ export default function Home() {
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-flame-500/10 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-ember-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+        <BackgroundFlames />
       </div>
 
       {/* Main content */}
