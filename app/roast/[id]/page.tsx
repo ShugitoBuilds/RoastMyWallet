@@ -21,6 +21,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         return {
             title: "Roast Not Found | Roast My Wallet",
             description: "This roast doesn't exist. Get your own wallet roasted!",
+        };
+    }
+
+    const title = `Roast My Wallet - Grade: ${roast.grade}`;
+    const description = `${roast.roast_text.slice(0, 150)}...`;
+
+    // Use static OG image with hardcoded production URL to ensure it works
+    const ogImageUrl = "https://roastmybasewallet.vercel.app/roast-og.jpg";
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
             description,
             type: "website",
             url: `${BASE_URL}/roast/${id}`,
@@ -34,20 +48,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             ],
             siteName: "Roast My Wallet",
         },
-            twitter: {
+        twitter: {
             card: "summary_large_image",
-                title,
-                description,
-                images: [ogImageUrl],
+            title,
+            description,
+            images: [ogImageUrl],
         },
         // Farcaster Frame meta tags
         other: {
             "fc:frame": "vNext",
-                "fc:frame:image": ogImageUrl,
-                    "fc:frame:image:aspect_ratio": "1.91:1",
-                        "fc:frame:button:1": "Get Roasted",
-                            "fc:frame:button:1:action": "link",
-                                "fc:frame:button:1:target": BASE_URL,
+            "fc:frame:image": ogImageUrl,
+            "fc:frame:image:aspect_ratio": "1.91:1",
+            "fc:frame:button:1": "Get Roasted",
+            "fc:frame:button:1:action": "link",
+            "fc:frame:button:1:target": BASE_URL,
         },
     };
 }
