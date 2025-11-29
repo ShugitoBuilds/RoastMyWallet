@@ -59,6 +59,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [roastType, setRoastType] = useState<"free" | "premium" | "friend">("free");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [testFriendAddress, setTestFriendAddress] = useState("");
 
   const handleFreeRoast = async () => {
     setIsLoading(true);
@@ -106,12 +107,16 @@ export default function Home() {
 
   // Test friend roast (for debugging - no payment required)
   const handleTestFriend = async () => {
+    if (!testFriendAddress) {
+      alert("Please enter a friend's wallet address");
+      return;
+    }
     setIsLoading(true);
     try {
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, type: "friend" }),
+        body: JSON.stringify({ address: testFriendAddress, type: "friend" }),
       });
       const data = await response.json();
       setRoast(data.roast);
@@ -208,7 +213,9 @@ export default function Home() {
 
                     {/* Test Premium button (Admin Only) */}
                     {isAdmin && (
-                      <div className="space-y-2">
+                      <div className="space-y-3 p-4 bg-charcoal-800/30 rounded-xl border border-charcoal-700/30">
+                        <p className="text-xs font-mono text-charcoal-500 uppercase tracking-wider text-center">Admin Controls</p>
+
                         <button
                           onClick={handleTestPremium}
                           disabled={isLoading}
@@ -216,13 +223,23 @@ export default function Home() {
                         >
                           <span>🧪 Test Premium Roast</span>
                         </button>
-                        <button
-                          onClick={handleTestFriend}
-                          disabled={isLoading}
-                          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-flame-400 bg-flame-500/10 border border-flame-500/30 hover:bg-flame-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <span>🧪 Test Friend Roast</span>
-                        </button>
+
+                        <div className="space-y-2">
+                          <input
+                            type="text"
+                            placeholder="0x... friend's address"
+                            value={testFriendAddress}
+                            onChange={(e) => setTestFriendAddress(e.target.value)}
+                            className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg px-3 py-2 text-sm text-charcoal-200 placeholder:text-charcoal-600 focus:outline-none focus:border-flame-500/50 transition-colors font-mono"
+                          />
+                          <button
+                            onClick={handleTestFriend}
+                            disabled={isLoading || !testFriendAddress}
+                            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-flame-400 bg-flame-500/10 border border-flame-500/30 hover:bg-flame-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <span>🧪 Test Friend Roast</span>
+                          </button>
+                        </div>
                       </div>
                     )}
 

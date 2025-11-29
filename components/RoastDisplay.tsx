@@ -147,7 +147,9 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
     const oneLiner = getOneLiner(roast);
     const gradeEmoji = scorecard ? getGradeEmoji(scorecard.grade) : "💀";
 
-    const intro = "I just got my wallet ruthlessly roasted 💀";
+    const intro = type === "friend"
+      ? "I just ruthlessly roasted my friend's wallet 💀"
+      : "I just got my wallet ruthlessly roasted 💀";
 
     const text = scorecard
       ? `${intro}\n\n${oneLiner}\n\nGrade: ${scorecard.grade} ${gradeEmoji}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
@@ -172,7 +174,9 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
     const oneLiner = getOneLiner(roast);
     const gradeEmoji = scorecard ? getGradeEmoji(scorecard.grade) : "💀";
 
-    const intro = "I just got my wallet ruthlessly roasted 💀";
+    const intro = type === "friend"
+      ? "I just ruthlessly roasted my friend's wallet 💀"
+      : "I just got my wallet ruthlessly roasted 💀";
 
     const text = scorecard
       ? `${intro}\n\n${oneLiner}\n\nGrade: ${scorecard.grade} ${gradeEmoji}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
