@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-function FlameParticle({ delay, duration, left }: { delay: number; duration: number; left: number }) {
+function FlameParticle({ delay, duration, left, scale }: { delay: number; duration: number; left: number; scale: number }) {
     return (
         <div
             className="absolute bottom-0 animate-fire-flicker pointer-events-none"
@@ -10,15 +10,16 @@ function FlameParticle({ delay, duration, left }: { delay: number; duration: num
                 left: `${left}%`,
                 animationDelay: `${delay}s`,
                 animationDuration: `${duration}s`,
+                transform: `scale(${scale})`,
             }}
         >
             <svg
-                width="20"
-                height="20"
+                width={20 * scale}
+                height={20 * scale}
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-flame-500/20"
+                className="text-flame-500/30"
             >
                 <path
                     d="M12 2C12 2 8 6 8 10C8 12 9 14 12 14C15 14 16 12 16 10C16 6 12 2 12 2Z"
@@ -35,15 +36,16 @@ function FlameParticle({ delay, duration, left }: { delay: number; duration: num
 }
 
 export function BackgroundFlames() {
-    const [particles, setParticles] = useState<{ id: number; delay: number; duration: number; left: number }[]>([]);
+    const [particles, setParticles] = useState<{ id: number; delay: number; duration: number; left: number; scale: number }[]>([]);
 
     useEffect(() => {
         // Generate random particles on client side to avoid hydration mismatch
-        const newParticles = Array.from({ length: 15 }).map((_, i) => ({
+        const newParticles = Array.from({ length: 25 }).map((_, i) => ({
             id: i,
             delay: Math.random() * 5,
-            duration: 2 + Math.random() * 3, // 2-5s duration
+            duration: 3 + Math.random() * 4, // 3-7s duration
             left: Math.random() * 100,
+            scale: 0.5 + Math.random() * 1.5, // 0.5x to 2x size
         }));
         setParticles(newParticles);
     }, []);
