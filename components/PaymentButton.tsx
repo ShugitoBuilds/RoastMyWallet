@@ -253,7 +253,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
                 <span>Processing...</span>
               </>
             ) : (
-              <span>Pay & Roast</span>
+              <span>{type === "premium" ? "Get Savage Roast" : "Roast Them"}</span>
             )}
           </button>
 

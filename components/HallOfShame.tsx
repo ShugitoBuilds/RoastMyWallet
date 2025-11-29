@@ -68,81 +68,83 @@ export function HallOfShame() {
   }
 
   return (
-    <div className="card p-6 space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-ember-500/20">
-            <SkullIcon className="w-5 h-5 text-ember-400" />
+    <div className="animated-border-container rounded-2xl" style={{ "--border-color": "#fbbf24" } as React.CSSProperties}>
+      <div className="animated-border-content card p-6 space-y-4 shadow-[0_0_30px_-5px_rgba(251,191,36,0.3)]">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-ember-500/20">
+              <SkullIcon className="w-5 h-5 text-ember-400" />
+            </div>
+            <div>
+              <h3 className="font-display font-semibold text-amber-400 animate-pulse">
+                Hall of Shame
+              </h3>
+              <p className="text-xs text-charcoal-500">Worst portfolios today</p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-display font-semibold text-charcoal-100">
-              Hall of Shame
-            </h3>
-            <p className="text-xs text-charcoal-500">Worst portfolios today</p>
-          </div>
+          {isMock && (
+            <span className="text-xs text-charcoal-600 bg-charcoal-800 px-2 py-1 rounded">
+              Demo Data
+            </span>
+          )}
         </div>
-        {isMock && (
-          <span className="text-xs text-charcoal-600 bg-charcoal-800 px-2 py-1 rounded">
-            Demo Data
-          </span>
-        )}
-      </div>
 
-      {/* Leaderboard entries */}
-      <div className="space-y-2">
-        {entries.map((entry, index) => (
-          <div
-            key={entry.id}
-            className="flex items-center gap-4 p-3 rounded-xl bg-charcoal-800/30 border border-charcoal-800/50 hover:border-charcoal-700/50 transition-colors"
-          >
-            {/* Rank */}
-            <div className="flex items-center justify-center w-8 h-8">
-              {index === 0 ? (
-                <TrophyIcon className="w-6 h-6 text-amber-400" />
-              ) : (
-                <span className="text-lg font-display font-bold text-charcoal-500">
-                  {index + 1}
-                </span>
-              )}
-            </div>
-
-            {/* Grade */}
+        {/* Leaderboard entries */}
+        <div className="space-y-2">
+          {entries.map((entry, index) => (
             <div
-              className="w-10 h-10 rounded-full flex items-center justify-center border-2 text-sm font-bold"
-              style={{
-                borderColor: entry.grade_color,
-                color: entry.grade_color,
-                backgroundColor: `${entry.grade_color}20`,
-              }}
+              key={entry.id}
+              className="flex items-center gap-4 p-3 rounded-xl bg-charcoal-800/30 border border-charcoal-800/50 hover:border-charcoal-700/50 transition-colors"
             >
-              {entry.grade}
-            </div>
+              {/* Rank */}
+              <div className="flex items-center justify-center w-8 h-8">
+                {index === 0 ? (
+                  <TrophyIcon className="w-6 h-6 text-amber-400" />
+                ) : (
+                  <span className="text-lg font-display font-bold text-charcoal-500">
+                    {index + 1}
+                  </span>
+                )}
+              </div>
 
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-mono text-charcoal-300 truncate">
-                {entry.wallet_address}
-              </p>
-              <p className="text-xs text-charcoal-500">
-                Top bag: <span className="text-ember-400">${entry.top_bagholder}</span>
-              </p>
-            </div>
+              {/* Grade */}
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center border-2 text-sm font-bold"
+                style={{
+                  borderColor: entry.grade_color,
+                  color: entry.grade_color,
+                  backgroundColor: `${entry.grade_color}20`,
+                }}
+              >
+                {entry.grade}
+              </div>
 
-            {/* Score */}
-            <div className="text-right">
-              <p className="text-xs text-charcoal-500">Score</p>
-              <p className="text-sm font-semibold text-charcoal-300">{entry.score}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-mono text-charcoal-300 truncate">
+                  {entry.wallet_address}
+                </p>
+                <p className="text-xs text-charcoal-500">
+                  Top bag: <span className="text-ember-400">${entry.top_bagholder}</span>
+                </p>
+              </div>
 
-      {/* Footer */}
-      <div className="pt-2 border-t border-charcoal-800">
-        <p className="text-xs text-charcoal-600 text-center">
-          Submit your roast to compete for the worst portfolio
-        </p>
+              {/* Score */}
+              <div className="text-right">
+                <p className="text-xs text-charcoal-500">Score</p>
+                <p className="text-sm font-semibold text-charcoal-300">{entry.score}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="pt-2 border-t border-charcoal-800">
+          <p className="text-xs text-charcoal-600 text-center">
+            Submit your roast to compete for the worst portfolio
+          </p>
+        </div>
       </div>
     </div>
   );
