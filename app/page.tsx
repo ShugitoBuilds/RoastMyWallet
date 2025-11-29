@@ -49,6 +49,8 @@ function FlameIcon({ className }: { className?: string }) {
   );
 }
 
+import { AdminAccess } from "@/components/AdminAccess";
+
 export default function Home() {
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
@@ -56,6 +58,7 @@ export default function Home() {
   const [scorecard, setScorecard] = useState<ScorecardData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [roastType, setRoastType] = useState<"free" | "premium" | "friend">("free");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleFreeRoast = async () => {
     setIsLoading(true);
@@ -181,14 +184,16 @@ export default function Home() {
                       <span>Get Free Roast</span>
                     </button>
 
-                    {/* Test Premium button (for debugging) */}
-                    <button
-                      onClick={handleTestPremium}
-                      disabled={isLoading}
-                      className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <span>🧪 Test Premium Roast</span>
-                    </button>
+                    {/* Test Premium button (Admin Only) */}
+                    {isAdmin && (
+                      <button
+                        onClick={handleTestPremium}
+                        disabled={isLoading}
+                        className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <span>🧪 Test Premium Roast</span>
+                      </button>
+                    )}
 
                     {/* Premium section */}
                     <div className="relative">
@@ -249,6 +254,8 @@ export default function Home() {
           </footer>
         </div>
       </div>
+
+      <AdminAccess onAccessGranted={() => setIsAdmin(true)} />
     </main>
   );
 }
