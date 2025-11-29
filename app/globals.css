@@ -83,6 +83,51 @@
       transform: translateY(0);
     }
   }
+
+  /* Animated Border Utilities */
+  .animated-border-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .animated-border-container::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent, 
+      transparent, 
+      transparent, 
+      var(--border-color, #f97316)
+    );
+    animation: border-spin 4s linear infinite;
+    z-index: 0;
+  }
+
+  .animated-border-content {
+    position: relative;
+    z-index: 1;
+    background: inherit;
+    border-radius: inherit;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(
+      to right,
+      #f97316 20%,
+      #fbbf24 40%,
+      #fbbf24 60%,
+      #f97316 80%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: text-shimmer 3s linear infinite;
+  }
 }
 
 

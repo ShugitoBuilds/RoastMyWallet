@@ -80,6 +80,25 @@ function ShareIcon({ className }: { className?: string }) {
 export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayProps) {
   const [copied, setCopied] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [displayedRoast, setDisplayedRoast] = useState("");
+
+  // Typewriter effect
+  useEffect(() => {
+    setDisplayedRoast("");
+    let i = 0;
+    const speed = 10; // ms per char
+
+    const interval = setInterval(() => {
+      if (i < roast.length) {
+        setDisplayedRoast((prev) => prev + roast.charAt(i));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [roast]);
 
   const getTypeConfig = () => {
     switch (type) {
@@ -348,7 +367,10 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${config.gradient}`} />
 
         <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
-          {roast}
+          <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
+            {displayedRoast}
+            <span className="animate-pulse text-flame-500">|</span>
+          </p>
         </p>
       </div>
 

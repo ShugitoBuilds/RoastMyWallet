@@ -9,8 +9,25 @@ import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import { ScorecardData } from "@/lib/scorecard";
 
-// Flame icon component
-function FlameIcon({ className }: { className?: string }) {
+// Small Flame (for Free Roast)
+function SmallFlameIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2C12 2 8 6 8 10C8 12 9 14 12 14C15 14 16 12 16 10C16 6 12 2 12 2Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+// Roaring Fire (for Premium Roast)
+function RoaringFireIcon({ className }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -30,6 +47,14 @@ function FlameIcon({ className }: { className?: string }) {
         d="M8 10C8 6 12 2 12 2C6 4 4 8 4 12C4 16 7 20 12 22C17 20 20 16 20 12C20 8 18 4 12 2C12 2 16 6 16 10C16 12 15 14 12 14C9 14 8 12 8 10Z"
         fill="url(#flame-gradient-3)"
       />
+      <path
+        d="M19 12C19 12 17 14 17 16C17 17.5 18 19 19 19C20 19 21 17.5 21 16C21 14 19 12 19 12Z"
+        fill="url(#flame-gradient-1)"
+      />
+      <path
+        d="M5 12C5 12 7 14 7 16C7 17.5 6 19 5 19C4 19 3 17.5 3 16C3 14 5 12 5 12Z"
+        fill="url(#flame-gradient-1)"
+      />
       <defs>
         <linearGradient id="flame-gradient-1" x1="12" y1="2" x2="12" y2="14" gradientUnits="userSpaceOnUse">
           <stop stopColor="#F97316" />
@@ -38,6 +63,42 @@ function FlameIcon({ className }: { className?: string }) {
         <linearGradient id="flame-gradient-2" x1="12" y1="8" x2="12" y2="15" gradientUnits="userSpaceOnUse">
           <stop stopColor="#FCD34D" />
           <stop offset="1" stopColor="#F97316" />
+        </linearGradient>
+        <linearGradient id="flame-gradient-3" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#F97316" />
+          <stop offset="0.5" stopColor="#DC2626" />
+          <stop offset="1" stopColor="#991B1B" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+// Social Fire (for Friend Roast)
+function SocialFireIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M16 12C16 12 14 14 14 16C14 17.5 15 19 16 19C17 19 18 17.5 18 16C18 14 16 12 16 12Z"
+        fill="url(#flame-gradient-1)"
+      />
+      <path
+        d="M8 12C8 12 10 14 10 16C10 17.5 9 19 8 19C7 19 6 17.5 6 16C6 14 8 12 8 12Z"
+        fill="url(#flame-gradient-1)"
+      />
+      <path
+        d="M12 2C12 2 8 6 8 10C8 12 9 14 12 14C15 14 16 12 16 10C16 6 12 2 12 2Z"
+        fill="url(#flame-gradient-3)"
+      />
+      <defs>
+        <linearGradient id="flame-gradient-1" x1="12" y1="2" x2="12" y2="14" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#F97316" />
+          <stop offset="1" stopColor="#DC2626" />
         </linearGradient>
         <linearGradient id="flame-gradient-3" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
           <stop stopColor="#F97316" />
@@ -140,8 +201,8 @@ export default function Home() {
     <main className="min-h-screen flex flex-col pb-24">
       {/* Background decoration */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-flame-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-ember-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-flame-500/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-ember-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
       </div>
 
       {/* Main content */}
@@ -151,9 +212,9 @@ export default function Home() {
           {/* Header */}
           <header className="text-center space-y-4 animate-in">
             <div className="inline-flex items-center justify-center gap-3 mb-2">
-              <FlameIcon className="w-12 h-12 animate-pulse-slow" />
+              <RoaringFireIcon className="w-12 h-12 animate-pulse-slow" />
             </div>
-            <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight">
+            <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-shimmer">
               <span className="text-gradient glow-text">Roast</span>
               <span className="text-charcoal-100"> My </span>
               <span style={{ color: '#1652F0' }}>Base</span>
@@ -165,129 +226,131 @@ export default function Home() {
           </header>
 
           {/* Main card */}
-          <div className="card p-8 space-y-6 animate-in" style={{ animationDelay: "0.1s" }}>
-            {!isConnected ? (
-              <div className="flex flex-col items-center space-y-6 py-4">
-                <div className="text-center space-y-2">
-                  <h2 className="font-display text-xl font-semibold text-charcoal-100">
-                    Ready to get roasted?
-                  </h2>
-                  <p className="text-charcoal-500 text-sm">
-                    Connect your wallet to begin
-                  </p>
-                </div>
-                <WalletConnect />
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {/* Connected wallet display */}
-                <div className="flex items-center justify-between p-4 bg-charcoal-800/50 rounded-xl border border-charcoal-700/30">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-charcoal-400 text-sm font-medium">Connected</span>
-                    <code className="text-charcoal-300 text-sm font-mono">
-                      {address?.slice(0, 6)}...{address?.slice(-4)}
-                    </code>
-                  </div>
-                  <button
-                    onClick={() => disconnect()}
-                    className="text-ember-400 hover:text-ember-300 text-sm font-medium transition-colors"
-                  >
-                    Disconnect
-                  </button>
-                </div>
-
-                {isLoading ? (
-                  <LoadingRoast />
-                ) : !roast ? (
-                  <div className="space-y-6">
-                    {/* Free roast button */}
-                    <button
-                      onClick={handleFreeRoast}
-                      disabled={isLoading}
-                      className="btn-primary w-full flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <FlameIcon className="w-5 h-5" />
-                      <span>Get Free Roast</span>
-                    </button>
-
-                    {/* Test Premium button (Admin Only) */}
-                    {isAdmin && (
-                      <div className="space-y-3 p-4 bg-charcoal-800/30 rounded-xl border border-charcoal-700/30">
-                        <p className="text-xs font-mono text-charcoal-500 uppercase tracking-wider text-center">Admin Controls</p>
-
-                        <button
-                          onClick={handleTestPremium}
-                          disabled={isLoading}
-                          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <span>🧪 Test Premium Roast</span>
-                        </button>
-
-                        <div className="space-y-2">
-                          <input
-                            type="text"
-                            placeholder="0x... friend's address"
-                            value={testFriendAddress}
-                            onChange={(e) => setTestFriendAddress(e.target.value)}
-                            className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg px-3 py-2 text-sm text-charcoal-200 placeholder:text-charcoal-600 focus:outline-none focus:border-flame-500/50 transition-colors font-mono"
-                          />
-                          <button
-                            onClick={handleTestFriend}
-                            disabled={isLoading || !testFriendAddress}
-                            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-flame-400 bg-flame-500/10 border border-flame-500/30 hover:bg-flame-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <span>🧪 Test Friend Roast</span>
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Premium section */}
-                    <div className="relative">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-charcoal-800" />
-                      </div>
-                      <div className="relative flex justify-center">
-                        <span className="px-4 bg-charcoal-900 text-charcoal-500 text-sm font-medium">
-                          Premium Roasts
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="grid gap-4">
-                      <PaymentButton
-                        type="premium"
-                        address={address || ""}
-                        onSuccess={(roastText) => {
-                          setRoast(roastText);
-                          setRoastType("premium");
-                        }}
-                      />
-                      <PaymentButton
-                        type="friend"
-                        address={address || ""}
-                        onSuccess={(roastText) => {
-                          setRoast(roastText);
-                          setRoastType("friend");
-                        }}
-                      />
-                    </div>
-
-                    <p className="text-center text-charcoal-600 text-xs">
-                      💡 You will only be charged $1 USDC for any transaction
+          <div className="animated-border-container rounded-2xl">
+            <div className="animated-border-content card p-8 space-y-6 animate-in" style={{ animationDelay: "0.1s" }}>
+              {!isConnected ? (
+                <div className="flex flex-col items-center space-y-6 py-4">
+                  <div className="text-center space-y-2">
+                    <h2 className="font-display text-xl font-semibold text-charcoal-100">
+                      Ready to get roasted?
+                    </h2>
+                    <p className="text-charcoal-500 text-sm">
+                      Connect your wallet to begin
                     </p>
                   </div>
-                ) : (
-                  <RoastDisplay
-                    roast={roast}
-                    type={roastType}
-                    scorecard={scorecard || undefined}
-                    onReset={handleReset}
-                  />
-                )}
-              </div>
-            )}
+                  <WalletConnect />
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Connected wallet display */}
+                  <div className="flex items-center justify-between p-4 bg-charcoal-800/50 rounded-xl border border-charcoal-700/30">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-charcoal-400 text-sm font-medium">Connected</span>
+                      <code className="text-charcoal-300 text-sm font-mono">
+                        {address?.slice(0, 6)}...{address?.slice(-4)}
+                      </code>
+                    </div>
+                    <button
+                      onClick={() => disconnect()}
+                      className="text-ember-400 hover:text-ember-300 text-sm font-medium transition-colors"
+                    >
+                      Disconnect
+                    </button>
+                  </div>
+
+                  {isLoading ? (
+                    <LoadingRoast />
+                  ) : !roast ? (
+                    <div className="space-y-6">
+                      {/* Free roast button */}
+                      <button
+                        onClick={handleFreeRoast}
+                        disabled={isLoading}
+                        className="btn-secondary w-full flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
+                      >
+                        <SmallFlameIcon className="w-5 h-5 text-flame-500 group-hover:scale-110 transition-transform" />
+                        <span>Get Free Roast</span>
+                      </button>
+
+                      {/* Test Premium button (Admin Only) */}
+                      {isAdmin && (
+                        <div className="space-y-3 p-4 bg-charcoal-800/30 rounded-xl border border-charcoal-700/30">
+                          <p className="text-xs font-mono text-charcoal-500 uppercase tracking-wider text-center">Admin Controls</p>
+
+                          <button
+                            onClick={handleTestPremium}
+                            disabled={isLoading}
+                            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <span>🧪 Test Premium Roast</span>
+                          </button>
+
+                          <div className="space-y-2">
+                            <input
+                              type="text"
+                              placeholder="0x... friend's address"
+                              value={testFriendAddress}
+                              onChange={(e) => setTestFriendAddress(e.target.value)}
+                              className="w-full bg-charcoal-900 border border-charcoal-700 rounded-lg px-3 py-2 text-sm text-charcoal-200 placeholder:text-charcoal-600 focus:outline-none focus:border-flame-500/50 transition-colors font-mono"
+                            />
+                            <button
+                              onClick={handleTestFriend}
+                              disabled={isLoading || !testFriendAddress}
+                              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-flame-400 bg-flame-500/10 border border-flame-500/30 hover:bg-flame-500/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <span>🧪 Test Friend Roast</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Premium section */}
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <div className="w-full border-t border-charcoal-800" />
+                        </div>
+                        <div className="relative flex justify-center">
+                          <span className="px-4 bg-charcoal-900 text-flame-400 text-sm font-bold uppercase tracking-wider animate-pulse">
+                            Premium Roasts
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-4">
+                        <PaymentButton
+                          type="premium"
+                          address={address || ""}
+                          onSuccess={(roastText) => {
+                            setRoast(roastText);
+                            setRoastType("premium");
+                          }}
+                        />
+                        <PaymentButton
+                          type="friend"
+                          address={address || ""}
+                          onSuccess={(roastText) => {
+                            setRoast(roastText);
+                            setRoastType("friend");
+                          }}
+                        />
+                      </div>
+
+                      <p className="text-center text-charcoal-600 text-xs">
+                        💡 You will only be charged $1 USDC for any transaction
+                      </p>
+                    </div>
+                  ) : (
+                    <RoastDisplay
+                      roast={roast}
+                      type={roastType}
+                      scorecard={scorecard || undefined}
+                      onReset={handleReset}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Hall of Shame */}
@@ -301,7 +364,6 @@ export default function Home() {
           </footer>
         </div>
       </div>
-
       <AdminAccess onAccessGranted={() => setIsAdmin(true)} />
     </main>
   );

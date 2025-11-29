@@ -65,11 +65,6 @@ const config: Config = {
         "warm-gradient": "linear-gradient(135deg, #f97316 0%, #dc2626 50%, #f59e0b 100%)",
         "warm-subtle": "linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%)",
       },
-      animation: {
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "float": "float 6s ease-in-out infinite",
-        "shimmer": "shimmer 2s linear infinite",
-      },
       keyframes: {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
@@ -79,6 +74,26 @@ const config: Config = {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "border-spin": {
+          "100%": { transform: "rotate(-360deg)" },
+        },
+        "text-shimmer": {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left center",
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center",
+          },
+        },
+      },
+      animation: {
+        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float": "float 6s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
+        "border-spin": "border-spin 7s linear infinite",
+        "text-shimmer": "text-shimmer 3s ease infinite",
       },
     },
   },
