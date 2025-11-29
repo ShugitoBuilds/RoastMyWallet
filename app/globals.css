@@ -15,7 +15,7 @@
 
   body {
     @apply bg-charcoal-950 text-charcoal-100;
-    background-image: 
+    background-image:
       radial-gradient(ellipse at top, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
       radial-gradient(ellipse at bottom right, rgba(220, 38, 38, 0.05) 0%, transparent 50%);
     min-height: 100vh;
@@ -28,24 +28,15 @@
 
 @layer components {
   .btn-primary {
-    @apply relative overflow-hidden px-8 py-4 font-display font-semibold text-white 
-           bg-gradient-to-r from-flame-500 via-ember-500 to-flame-600
-           rounded-xl transition-all duration-300 ease-out
-           hover:shadow-glow hover:scale-[1.02] active:scale-[0.98]
-           before:absolute before:inset-0 before:bg-white/10 before:opacity-0 
-           before:transition-opacity hover:before:opacity-100;
+    @apply relative overflow-hidden px-8 py-4 font-display font-semibold text-white bg-gradient-to-r from-flame-500 via-ember-500 to-flame-600 rounded-xl transition-all duration-300 ease-out hover:shadow-glow hover:scale-[1.02] active:scale-[0.98] before:absolute before:inset-0 before:bg-white/10 before:opacity-0 before:transition-opacity hover:before:opacity-100;
   }
 
   .btn-secondary {
-    @apply px-6 py-3 font-display font-medium text-charcoal-200
-           bg-charcoal-800/50 border border-charcoal-700/50
-           rounded-xl transition-all duration-300
-           hover:bg-charcoal-800 hover:border-charcoal-600 hover:text-white;
+    @apply px-6 py-3 font-display font-medium text-charcoal-200 bg-charcoal-800/50 border border-charcoal-700/50 rounded-xl transition-all duration-300 hover:bg-charcoal-800 hover:border-charcoal-600 hover:text-white;
   }
 
   .card {
-    @apply bg-charcoal-900/80 backdrop-blur-sm border border-charcoal-800/50
-           rounded-2xl shadow-card transition-all duration-300;
+    @apply bg-charcoal-900/80 backdrop-blur-sm border border-charcoal-800/50 rounded-2xl shadow-card transition-all duration-300;
   }
 
   .card-hover {
@@ -61,10 +52,7 @@
   }
 
   .input-field {
-    @apply w-full px-4 py-3 bg-charcoal-800/50 border border-charcoal-700/50
-           rounded-xl text-charcoal-100 placeholder-charcoal-500
-           focus:outline-none focus:ring-2 focus:ring-flame-500/50 focus:border-flame-500/50
-           transition-all duration-200;
+    @apply w-full px-4 py-3 bg-charcoal-800/50 border border-charcoal-700/50 rounded-xl text-charcoal-100 placeholder-charcoal-500 focus:outline-none focus:ring-2 focus:ring-flame-500/50 focus:border-flame-500/50 transition-all duration-200;
   }
 }
 
@@ -78,6 +66,7 @@
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -88,21 +77,22 @@
   .animated-border-container {
     position: relative;
     overflow: hidden;
+    padding: 2px;
+    /* Defines border width */
+    border-radius: inherit;
+    background: transparent;
   }
 
   .animated-border-container::before {
     content: "";
     position: absolute;
-    top: -50%;
-    left: -50%;
+    inset: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(
-      transparent, 
-      transparent, 
-      transparent, 
-      var(--border-color, #f97316)
-    );
+    background: conic-gradient(transparent,
+        transparent,
+        transparent,
+        var(--border-color, #f97316));
     animation: border-spin 4s linear infinite;
     z-index: 0;
   }
@@ -110,18 +100,19 @@
   .animated-border-content {
     position: relative;
     z-index: 1;
-    background: inherit;
+    background: #18181b;
+    /* bg-charcoal-900 solid to hide gradient center */
     border-radius: inherit;
+    height: 100%;
+    width: 100%;
   }
 
   .text-shimmer {
-    background: linear-gradient(
-      to right,
-      #f97316 20%,
-      #fbbf24 40%,
-      #fbbf24 60%,
-      #f97316 80%
-    );
+    background: linear-gradient(to right,
+        #f97316 20%,
+        #fbbf24 40%,
+        #fbbf24 60%,
+        #f97316 80%);
     background-size: 200% auto;
     color: transparent;
     background-clip: text;
@@ -129,5 +120,3 @@
     animation: text-shimmer 3s linear infinite;
   }
 }
-
-

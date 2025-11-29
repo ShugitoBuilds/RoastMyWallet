@@ -208,55 +208,57 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
 
   return (
     <NetworkGuard>
-      <div className={`p-4 rounded-xl border ${config.border} ${config.bg} space-y-3 transition-all duration-300 hover:border-opacity-40`}>
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg bg-gradient-to-br ${config.gradient}`}>
-              <Icon className="w-6 h-6" />
+      <div className="animated-border-container rounded-xl">
+        <div className={`animated-border-content p-4 rounded-xl border ${config.border} ${config.bg} space-y-3 transition-all duration-300 hover:border-opacity-40`}>
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg bg-gradient-to-br ${config.gradient}`}>
+                <Icon className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-display font-semibold text-charcoal-100">{config.label}</h3>
+                <p className="text-xs text-charcoal-500">{config.description}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-display font-semibold text-charcoal-100">{config.label}</h3>
-              <p className="text-xs text-charcoal-500">{config.description}</p>
+            <div className="text-right">
+              <span className="font-display font-bold text-charcoal-200">$1</span>
+              <span className="text-charcoal-500 text-sm ml-1">USDC</span>
             </div>
           </div>
-          <div className="text-right">
-            <span className="font-display font-bold text-charcoal-200">$1</span>
-            <span className="text-charcoal-500 text-sm ml-1">USDC</span>
-          </div>
-        </div>
 
-        {/* Friend address input */}
-        {type === "friend" && (
-          <input
-            type="text"
-            placeholder="0x... friend's wallet address"
-            value={targetAddress}
-            onChange={(e) => setTargetAddress(e.target.value)}
-            className="input-field text-sm font-mono"
-          />
-        )}
+          {/* Friend address input */}
+          {type === "friend" && (
+            <input
+              type="text"
+              placeholder="0x... friend's wallet address"
+              value={targetAddress}
+              onChange={(e) => setTargetAddress(e.target.value)}
+              className="input-field text-sm font-mono"
+            />
+          )}
 
-        {/* Action button */}
-        <button
-          onClick={handlePayment}
-          disabled={isLoading || (type === "friend" && !targetAddress)}
-          className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-white 
+          {/* Action button */}
+          <button
+            onClick={handlePayment}
+            disabled={isLoading || (type === "friend" && !targetAddress)}
+            className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-white 
             bg-gradient-to-r ${config.gradient} ${config.hoverGradient}
             transition-all duration-300 hover:shadow-glow hover:scale-[1.01] active:scale-[0.99]
             disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none`}
-        >
-          {isLoading ? (
-            <>
-              <SpinnerIcon className="w-5 h-5" />
-              <span>Processing...</span>
-            </>
-          ) : (
-            <span>Pay & Roast</span>
-          )}
-        </button>
+          >
+            {isLoading ? (
+              <>
+                <SpinnerIcon className="w-5 h-5" />
+                <span>Processing...</span>
+              </>
+            ) : (
+              <span>Pay & Roast</span>
+            )}
+          </button>
 
 
+        </div>
       </div>
     </NetworkGuard>
   );
