@@ -67,7 +67,7 @@ export default function Home() {
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, type: "free" }),
+        body: JSON.stringify({ address, type: "free", submitToLeaderboard: true }),
       });
       const data = await response.json();
       setRoast(data.roast);
@@ -90,7 +90,7 @@ export default function Home() {
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, type: "premium" }),
+        body: JSON.stringify({ address, type: "premium", submitToLeaderboard: true }),
       });
       const data = await response.json();
       setRoast(data.roast);
