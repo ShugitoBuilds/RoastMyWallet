@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     siteName: "Roast My Base Wallet",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/roast-og.jpg",
         width: 1200,
-        height: 1200,
+        height: 630,
         alt: "Roast My Base Wallet",
       },
     ],
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Roast My Base Wallet | Get Roasted by AI",
     description: "Connect your wallet and let AI ruthlessly roast your Base token holdings.",
-    images: ["/og-image.jpg"],
+    images: ["/roast-og.jpg"],
   },
 };
 

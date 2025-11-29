@@ -26,21 +26,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     const title = `Roast My Wallet - Grade: ${roast.grade}`;
     const description = `${roast.roast_text.slice(0, 150)}...`;
-    const hook = getOneLiner(roast.roast_text);
 
-    // Generate OG image URL with scorecard data
-    const ogImageParams = new URLSearchParams({
-        grade: roast.grade,
-        gradeColor: roast.grade_color,
-        wallet: `${roast.wallet_address.slice(0, 6)}...${roast.wallet_address.slice(-4)}`,
-        bagholder: roast.top_bagholder,
-        timeBroke: roast.time_until_broke,
-        tokenCount: roast.token_count.toString(),
-        roastType: roast.roast_type,
-        hook: hook, // Pass the viral hook
-    });
-
-    const ogImageUrl = `${BASE_URL}/api/scorecard/${roast.id}?${ogImageParams.toString()}`;
+    // Use static OG image
+    const ogImageUrl = `${BASE_URL}/roast-og.jpg`;
 
     return {
         title,
@@ -55,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
                     url: ogImageUrl,
                     width: 1200,
                     height: 630,
-                    alt: `Roast Certificate - Grade ${roast.grade}`,
+                    alt: "Roast My Wallet",
                 },
             ],
             siteName: "Roast My Wallet",
