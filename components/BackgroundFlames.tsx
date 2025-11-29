@@ -19,7 +19,7 @@ function FlameParticle({ delay, duration, left, scale }: { delay: number; durati
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-flame-500/30"
+                className="text-flame-500/40"
             >
                 <path
                     d="M12 2C12 2 8 6 8 10C8 12 9 14 12 14C15 14 16 12 16 10C16 6 12 2 12 2Z"
@@ -40,12 +40,12 @@ export function BackgroundFlames() {
 
     useEffect(() => {
         // Generate random particles on client side to avoid hydration mismatch
-        const newParticles = Array.from({ length: 25 }).map((_, i) => ({
+        const newParticles = Array.from({ length: 35 }).map((_, i) => ({
             id: i,
             delay: Math.random() * 5,
             duration: 3 + Math.random() * 4, // 3-7s duration
             left: Math.random() * 100,
-            scale: 0.5 + Math.random() * 1.5, // 0.5x to 2x size
+            scale: 1.5 + Math.random() * 2.5, // 1.5x to 4x size
         }));
         setParticles(newParticles);
     }, []);
