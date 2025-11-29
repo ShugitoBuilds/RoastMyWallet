@@ -17,6 +17,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://roastmybasewallet.vercel.app"),
   title: "Roast My Base Wallet | Get Roasted by AI",
   description: "Connect your wallet and let AI ruthlessly roast your Base token holdings. The ultimate crypto roast experience.",
   openGraph: {
