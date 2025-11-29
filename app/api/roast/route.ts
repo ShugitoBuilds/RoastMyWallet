@@ -3,11 +3,19 @@ import { generateRoast } from "@/lib/roast-generator";
 import { getTokenBalances } from "@/lib/tokens";
 import { createScorecard } from "@/lib/scorecard";
 import { saveRoast, isSupabaseConfigured } from "@/lib/supabase";
+import { createPublicClient, http } from "viem";
+import { mainnet } from "viem/chains";
+
+// Initialize public client for ENS resolution
+const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+});
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { address, type, submitToLeaderboard } = body;
+    let { address, type, submitToLeaderboard } = body;
 
     if (!address) {
       return NextResponse.json(
@@ -16,7 +24,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
+    // Handle ENS names
+    if (address.endsWith(".eth")) {
+      try {
+        const resolvedAddress = await publicClient.getEnsAddress({
+          name: address,
+        });
+
+        if (resolvedAddress) {
+          address = resolvedAddress;
+        } else {
+          return NextResponse.json(
+            { error: "Could not resolve ENS name" },
+            { status: 400 }
+          );
+        }
+      } catch (error) {
+        console.error("ENS resolution error:", error);
+        return NextResponse.json(
+          { error: "Failed to resolve ENS name" },
+          { status: 400 }
+        );
+      }
+    } else if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
       return NextResponse.json(
         { error: "Invalid wallet address format" },
         { status: 400 }
