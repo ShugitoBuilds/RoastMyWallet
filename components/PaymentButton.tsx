@@ -188,10 +188,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
           )}
         </button>
 
-        {/* Clarification note */}
-        <p className="text-xs text-charcoal-500 text-center leading-relaxed">
-          💡 You will only be charged <span className="text-charcoal-400 font-semibold">$1 USDC</span> for this transaction
-        </p>
+
       </div>
     </NetworkGuard>
   );

@@ -227,7 +227,7 @@ export default function Home() {
                     </div>
 
                     <p className="text-center text-charcoal-600 text-xs">
-                      Premium roasts are more savage and detailed
+                      You will only be charged $1 USDC for any transaction
                     </p>
                   </div>
                 ) : (

@@ -265,16 +265,6 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         </details>
       )}
 
-      {/* Roast content */}
-      <div className={`relative p-6 rounded-xl ${config.bg} border ${config.border} overflow-hidden`}>
-        {/* Decorative gradient */}
-        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${config.gradient}`} />
-
-        <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
-          {roast}
-        </p>
-      </div>
-
       {/* Actions */}
       <div className="flex gap-3">
         {/* Copy button */}
@@ -332,6 +322,18 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
           )}
         </div>
       </div>
+
+      {/* Roast content */}
+      <div className={`relative p-6 rounded-xl ${config.bg} border ${config.border} overflow-hidden`}>
+        {/* Decorative gradient */}
+        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${config.gradient}`} />
+
+        <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
+          {roast}
+        </p>
+      </div>
+
+
 
       {/* NFT Minting - Disabled for MVP */}
       {/* {scorecard && (
