@@ -17,6 +17,10 @@ const wagmiConfig = createConfig({
       appName: "Roast My Wallet",
       preference: "all",
     }),
+    coinbaseWallet({
+      appName: "Roast My Wallet",
+      preference: "smartWalletOnly",
+    }),
     metaMask(),
     walletConnect({
       projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "4f0d3680219468087948675667527631", // Fallback public ID for testing
