@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { Connector } from "wagmi";
 
@@ -9,34 +10,38 @@ function WalletIcon({ id, className }: { id: string; className?: string }) {
     // Simple mapping for common wallet icons
     if (id.toLowerCase().includes("metamask")) {
         return (
-            <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M27.4 3.8L25.6 12.8L28.7 19.8L31.2 11.2L27.4 3.8Z" fill="#E17726" stroke="#E17726" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M4.6 3.8L8.4 12.8L5.3 19.8L0.8 11.2L4.6 3.8Z" fill="#E27625" stroke="#E27625" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M23.9 22.8L27.6 28.6L30.3 23.3L28.7 19.8L23.9 22.8Z" fill="#E27625" stroke="#E27625" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M8.1 22.8L4.4 28.6L1.7 23.3L3.3 19.8L8.1 22.8Z" fill="#E27625" stroke="#E27625" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M10.6 15.3L8.4 12.8L4.6 3.8L12.4 9.6L10.6 15.3Z" fill="#E27625" stroke="#E27625" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M21.4 15.3L23.6 12.8L27.4 3.8L19.6 9.6L21.4 15.3Z" fill="#E27625" stroke="#E27625" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M12.4 9.6L4.6 3.8L10.4 1.8L16 6.3L21.6 1.8L27.4 3.8L19.6 9.6L16 12.2L12.4 9.6Z" fill="#D5BFB2" stroke="#D5BFB2" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M12.4 9.6L16 12.2L19.6 9.6L21.4 15.3L16 18.4L10.6 15.3L12.4 9.6Z" fill="#233447" stroke="#233447" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M10.6 15.3L16 18.4L13.3 23.9L8.1 22.8L5.3 19.8L8.4 12.8L10.6 15.3Z" fill="#CC6228" stroke="#CC6228" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M21.4 15.3L16 18.4L18.7 23.9L23.9 22.8L26.7 19.8L23.6 12.8L21.4 15.3Z" fill="#CC6228" stroke="#CC6228" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M18.7 23.9L16 28.2L13.3 23.9L16 18.4L18.7 23.9Z" fill="#CC6228" stroke="#CC6228" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <div className={`relative ${className}`}>
+                <Image
+                    src="/icon-metamask.png"
+                    alt="MetaMask"
+                    fill
+                    className="object-contain"
+                />
+            </div>
         );
     }
     if (id.toLowerCase().includes("coinbase")) {
         return (
-            <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="16" cy="16" r="16" fill="#0052FF" />
-                <path d="M16 8C11.5817 8 8 11.5817 8 16C8 20.4183 11.5817 24 16 24C20.4183 24 24 20.4183 24 16C24 11.5817 20.4183 8 16 8ZM16 20C13.7909 20 12 18.2091 12 16C12 13.7909 13.7909 12 16 12C18.2091 12 20 13.7909 20 16C20 18.2091 18.2091 20 16 20Z" fill="white" />
-            </svg>
+            <div className={`relative ${className}`}>
+                <Image
+                    src="/icon-coinbase.png"
+                    alt="Coinbase Wallet"
+                    fill
+                    className="object-contain"
+                />
+            </div>
         );
     }
     if (id.toLowerCase().includes("walletconnect")) {
         return (
-            <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M26.2 10.6C20.6 5.2 11.4 5.2 5.8 10.6L4.4 9.2C10.8 3.1 21.2 3.1 27.6 9.2L26.2 10.6ZM28.9 12L32 15.1L26.1 21L20.2 15.1L21.6 13.7L26.1 18.2L28.9 15.4L28.9 12ZM16 19.3L20.5 14.8L21.9 16.2L16 22.1L10.1 16.2L11.5 14.8L16 19.3ZM3.1 12L0 15.1L5.9 21L11.8 15.1L10.4 13.7L5.9 18.2L3.1 15.4L3.1 12Z" fill="#3B99FC" />
-            </svg>
+            <div className={`relative ${className}`}>
+                <Image
+                    src="/icon-walletconnect.png"
+                    alt="WalletConnect"
+                    fill
+                    className="object-contain"
+                />
+            </div>
         );
     }
     // Default wallet icon
@@ -72,6 +77,12 @@ export function WalletModal() {
 
     const handleConnect = (connector: Connector) => {
         connect({ connector });
+    };
+
+    const getConnectorName = (connector: Connector) => {
+        if (connector.id === 'injected') return 'Browser Wallet';
+        if (connector.name === 'Injected') return 'Browser Wallet';
+        return connector.name;
     };
 
     if (isConnected) {
@@ -136,7 +147,7 @@ export function WalletModal() {
                                 >
                                     <WalletIcon id={connector.id} className="w-8 h-8 text-charcoal-300 group-hover:text-flame-400 transition-colors shrink-0" />
                                     <span className="font-display font-medium text-charcoal-200 group-hover:text-white transition-colors">
-                                        {connector.name}
+                                        {getConnectorName(connector)}
                                     </span>
                                     {isPending && (
                                         <div className="ml-auto animate-spin h-4 w-4 border-2 border-flame-500 border-t-transparent rounded-full" />
