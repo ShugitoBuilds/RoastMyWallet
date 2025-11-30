@@ -1,7 +1,7 @@
 "use client";
 
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
-import { base } from "viem/chains";
+import { base, mainnet } from "wagmi/chains";
 import { ReactNode, useState } from "react";
 
 interface NetworkGuardProps {
@@ -37,13 +37,13 @@ export function NetworkGuard({ children, fallback }: NetworkGuardProps) {
     return <>{children}</>;
   }
 
-  // Check if on Base network (Chain ID 8453)
-  const isOnBase = chainId === base.id;
+  // Check if on supported network (Base or Mainnet)
+  const isSupported = chainId === base.id || chainId === mainnet.id;
 
-  const handleSwitchNetwork = async () => {
+  const handleSwitchNetwork = async (targetChainId: number) => {
     setError(null);
     try {
-      switchChain({ chainId: base.id });
+      switchChain({ chainId: targetChainId });
     } catch (err) {
       console.error("Failed to switch network:", err);
       setError("Failed to switch network. Please try manually in your wallet.");
@@ -51,7 +51,7 @@ export function NetworkGuard({ children, fallback }: NetworkGuardProps) {
   };
 
   // If on wrong network, show switch prompt
-  if (!isOnBase) {
+  if (!isSupported) {
     if (fallback) {
       return <>{fallback}</>;
     }
@@ -62,31 +62,36 @@ export function NetworkGuard({ children, fallback }: NetworkGuardProps) {
           <AlertIcon className="w-5 h-5 text-amber-400" />
           <div>
             <h3 className="font-display font-semibold text-amber-400">Wrong Network</h3>
-            <p className="text-xs text-charcoal-400">Please switch to Base to continue</p>
+            <p className="text-xs text-charcoal-400">Please switch to Base or Ethereum to continue</p>
           </div>
         </div>
-        
+
         {error && (
           <p className="text-sm text-ember-400">{error}</p>
         )}
 
-        <button
-          onClick={handleSwitchNetwork}
-          disabled={isPending}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold text-white 
-            bg-gradient-to-r from-amber-500 to-flame-500 hover:from-amber-400 hover:to-flame-400
-            transition-all duration-300 hover:shadow-glow hover:scale-[1.01] active:scale-[0.99]
-            disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-        >
-          {isPending ? (
-            <>
-              <SpinnerIcon className="w-5 h-5" />
-              <span>Switching...</span>
-            </>
-          ) : (
-            <span>Switch to Base</span>
-          )}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleSwitchNetwork(base.id)}
+            disabled={isPending}
+            className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg font-display font-semibold text-white text-sm
+              bg-[#1652F0] hover:bg-[#1652F0]/90
+              transition-all duration-300 hover:shadow-glow hover:scale-[1.01] active:scale-[0.99]
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            {isPending ? <SpinnerIcon className="w-4 h-4" /> : <span>Switch to Base</span>}
+          </button>
+          <button
+            onClick={() => handleSwitchNetwork(mainnet.id)}
+            disabled={isPending}
+            className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg font-display font-semibold text-white text-sm
+              bg-[#627EEA] hover:bg-[#627EEA]/90
+              transition-all duration-300 hover:shadow-glow hover:scale-[1.01] active:scale-[0.99]
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            {isPending ? <SpinnerIcon className="w-4 h-4" /> : <span>Switch to ETH</span>}
+          </button>
+        </div>
       </div>
     );
   }
@@ -95,21 +100,20 @@ export function NetworkGuard({ children, fallback }: NetworkGuardProps) {
   return <>{children}</>;
 }
 
-// Hook to check if user is on Base network
-export function useIsOnBase(): boolean {
+// Hook to check if user is on supported network
+export function useIsSupportedNetwork(): boolean {
   const chainId = useChainId();
-  return chainId === base.id;
+  return chainId === base.id || chainId === mainnet.id;
 }
 
 // Hook to get switch chain function
-export function useSwitchToBase() {
+export function useSwitchNetwork() {
   const { switchChain, isPending, error } = useSwitchChain();
-  
-  const switchToBase = () => {
-    switchChain({ chainId: base.id });
-  };
 
-  return { switchToBase, isPending, error };
+  const switchToBase = () => switchChain({ chainId: base.id });
+  const switchToMainnet = () => switchChain({ chainId: mainnet.id });
+
+  return { switchToBase, switchToMainnet, isPending, error };
 }
 
 

@@ -4,23 +4,26 @@ import { ReactNode } from "react";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, http } from "wagmi";
-import { base } from "wagmi/chains";
-import { coinbaseWallet } from "wagmi/connectors";
+import { base, mainnet } from "wagmi/chains";
+import { coinbaseWallet, metaMask, injected } from "wagmi/connectors";
 import "@coinbase/onchainkit/styles.css";
 
 const queryClient = new QueryClient();
 
 const wagmiConfig = createConfig({
-  chains: [base],
+  chains: [base, mainnet],
   connectors: [
     coinbaseWallet({
       appName: "Roast My Wallet",
       preference: "all",
     }),
+    metaMask(),
+    injected(),
   ],
   ssr: true,
   transports: {
     [base.id]: http(),
+    [mainnet.id]: http(),
   },
 });
 
