@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
 import { Connector } from "wagmi";
 
@@ -41,9 +42,14 @@ function WalletIcon({ id, className }: { id: string; className?: string }) {
 
 export function WalletModal() {
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const { connectors, connect, isPending, error } = useConnect();
     const { isConnected, address } = useAccount();
     const { disconnect } = useDisconnect();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Close modal when connected
     useEffect(() => {
@@ -93,8 +99,8 @@ export function WalletModal() {
                 Connect Wallet
             </button>
 
-            {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {isOpen && mounted && createPortal(
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                     {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-charcoal-950/80 backdrop-blur-sm animate-in fade-in duration-200"
@@ -102,7 +108,7 @@ export function WalletModal() {
                     />
 
                     {/* Modal */}
-                    <div className="relative w-full max-w-sm bg-charcoal-900 border border-charcoal-800 rounded-2xl shadow-2xl p-6 space-y-6 animate-in zoom-in-95 duration-200">
+                    <div className="relative w-full max-w-sm bg-charcoal-900 border border-charcoal-800 rounded-2xl shadow-2xl p-6 space-y-6 animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
                         <div className="text-center space-y-2">
                             <h3 className="font-display text-2xl font-bold text-charcoal-100">
                                 Connect Wallet
@@ -121,7 +127,7 @@ export function WalletModal() {
                                     className="w-full flex items-center gap-4 p-4 rounded-xl bg-charcoal-800/50 border border-charcoal-700/50 
                              hover:bg-charcoal-800 hover:border-flame-500/30 transition-all duration-200 group"
                                 >
-                                    <WalletIcon id={connector.id} className="w-8 h-8 text-charcoal-300 group-hover:text-flame-400 transition-colors" />
+                                    <WalletIcon id={connector.id} className="w-8 h-8 text-charcoal-300 group-hover:text-flame-400 transition-colors shrink-0" />
                                     <span className="font-display font-medium text-charcoal-200 group-hover:text-white transition-colors">
                                         {connector.name}
                                     </span>
@@ -145,7 +151,8 @@ export function WalletModal() {
                             Cancel
                         </button>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );
