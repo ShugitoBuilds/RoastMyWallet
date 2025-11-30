@@ -1,6 +1,6 @@
 "use client";
 
-import { WalletConnect } from "@/components/WalletConnect";
+import { WalletModal } from "@/components/WalletModal";
 import { RoastDisplay } from "@/components/RoastDisplay";
 import { PaymentButton } from "@/components/PaymentButton";
 import { LoadingRoast } from "@/components/LoadingRoast";
@@ -239,7 +239,7 @@ export default function Home() {
                       Connect your wallet to begin
                     </p>
                   </div>
-                  <WalletConnect />
+                  <WalletModal />
                 </div>
               ) : (
                 <div className="space-y-6">
