@@ -217,9 +217,8 @@ export default function Home() {
               <RoaringFireIcon className="w-12 h-12 animate-pulse-slow" />
             </div>
             <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-shimmer">
+              <span className="text-charcoal-100">Wallet </span>
               <span className="text-gradient glow-text">Roast</span>
-              <span className="text-charcoal-100"> My </span>
-              <span className="text-charcoal-100"> Wallet</span>
             </h1>
             <p className="text-charcoal-400 text-lg max-w-md mx-auto leading-relaxed">
               Connect your wallet securely, and get ruthlessly roasted based on your wallet holdings!
