@@ -15,7 +15,6 @@ const wagmiConfig = createConfig({
   connectors: [
     coinbaseWallet({
       appName: "Roast My Wallet",
-      preference: "smartWalletOnly",
     }),
   ],
   ssr: true,
