@@ -10,15 +10,17 @@ import { mainnet } from "viem/chains";
 // Initialize public client for ENS resolution with reliable RPCs
 const transports = [];
 
-// Add Alchemy if configured
-if (process.env.ALCHEMY_API_KEY) {
-  transports.push(http(`https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`));
+// Add Alchemy if configured and not a placeholder
+const alchemyKey = process.env.ALCHEMY_API_KEY;
+if (alchemyKey && !alchemyKey.includes("YOUR_NEW_ALCHEMY_API_KEY")) {
+  transports.push(http(`https://eth-mainnet.g.alchemy.com/v2/${alchemyKey}`));
 }
 
-// Add reliable public fallbacks
-transports.push(http("https://cloudflare-eth.com"));
-transports.push(http("https://rpc.ankr.com/eth"));
-transports.push(http()); // Default fallback
+// Add reliable public fallbacks with explicit timeouts
+transports.push(http("https://cloudflare-eth.com", { timeout: 10_000 }));
+transports.push(http("https://eth.llama.rpc.com", { timeout: 10_000 }));
+transports.push(http("https://rpc.ankr.com/eth", { timeout: 10_000 }));
+transports.push(http("https://1rpc.io/eth", { timeout: 10_000 }));
 
 const transport = fallback(transports);
 
