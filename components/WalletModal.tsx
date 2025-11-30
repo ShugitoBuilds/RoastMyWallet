@@ -32,6 +32,13 @@ function WalletIcon({ id, className }: { id: string; className?: string }) {
             </svg>
         );
     }
+    if (id.toLowerCase().includes("walletconnect")) {
+        return (
+            <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M26.2 10.6C20.6 5.2 11.4 5.2 5.8 10.6L4.4 9.2C10.8 3.1 21.2 3.1 27.6 9.2L26.2 10.6ZM28.9 12L32 15.1L26.1 21L20.2 15.1L21.6 13.7L26.1 18.2L28.9 15.4L28.9 12ZM16 19.3L20.5 14.8L21.9 16.2L16 22.1L10.1 16.2L11.5 14.8L16 19.3ZM3.1 12L0 15.1L5.9 21L11.8 15.1L10.4 13.7L5.9 18.2L3.1 15.4L3.1 12Z" fill="#3B99FC" />
+            </svg>
+        );
+    }
     // Default wallet icon
     return (
         <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

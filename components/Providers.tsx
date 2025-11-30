@@ -5,7 +5,7 @@ import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { base, mainnet } from "wagmi/chains";
-import { coinbaseWallet, metaMask, injected } from "wagmi/connectors";
+import { coinbaseWallet, metaMask, injected, walletConnect } from "wagmi/connectors";
 import "@coinbase/onchainkit/styles.css";
 
 const queryClient = new QueryClient();
@@ -18,6 +18,10 @@ const wagmiConfig = createConfig({
       preference: "all",
     }),
     metaMask(),
+    walletConnect({
+      projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "4f0d3680219468087948675667527631", // Fallback public ID for testing
+      showQrModal: true,
+    }),
     injected(),
   ],
   ssr: true,
