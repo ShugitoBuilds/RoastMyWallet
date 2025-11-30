@@ -15,7 +15,7 @@ const wagmiConfig = createConfig({
   connectors: [
     coinbaseWallet({
       appName: "Roast My Wallet",
-      appLogoUrl: "https://roastmywallet.vercel.app/logo.png",
+      preference: "all",
     }),
   ],
   ssr: true,
