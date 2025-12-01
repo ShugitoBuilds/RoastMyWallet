@@ -114,8 +114,18 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
   const { isConnected } = useAccount();
   const [targetAddress, setTargetAddress] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const { writeContract, data: hash, isPending } = useWriteContract();
+  const { writeContract, data: hash, isPending } = useWriteContract({
+    mutation: {
+      onError: (error) => {
+        console.error("Transaction error:", error);
+        setIsProcessing(false);
+        alert("Transaction failed or rejected.");
+      },
+    },
+  });
+
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
@@ -157,6 +167,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
   };
 
   const generateRoast = useCallback(async () => {
+    setIsGenerating(true);
     try {
       const roastAddress = type === "friend" && targetAddress ? targetAddress : address;
       const response = await fetch("/api/roast", {
@@ -169,9 +180,17 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
         }),
       });
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to generate roast");
+      }
+
       onSuccess(data.roast);
     } catch (error) {
       console.error("Error generating roast:", error);
+      alert("Payment successful, but roast generation failed. Please contact support.");
+    } finally {
+      setIsGenerating(false);
     }
   }, [type, targetAddress, address, onSuccess]);
 
@@ -183,7 +202,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
     }
   }, [isSuccess, isProcessing, generateRoast]);
 
-  const isLoading = isPending || isConfirming || isProcessing;
+  const isLoading = isPending || isConfirming || isProcessing || isGenerating;
 
   const config = type === "premium"
     ? {
