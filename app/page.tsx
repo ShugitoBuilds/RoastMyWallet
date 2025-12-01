@@ -4,7 +4,6 @@ import { WalletModal } from "@/components/WalletModal";
 import { RoastDisplay } from "@/components/RoastDisplay";
 import { PaymentButton } from "@/components/PaymentButton";
 import { LoadingRoast } from "@/components/LoadingRoast";
-import { HallOfShame } from "@/components/HallOfShame";
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import { ScorecardData } from "@/lib/scorecard";
@@ -210,47 +209,63 @@ export default function Home() {
         <BackgroundFlames />
       </div>
 
+      {/* Top Navigation Bar */}
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between px-6 py-4 gap-4">
+        {/* Logo (Top Left) */}
+        <div className="flex-shrink-0">
+          <img
+            src="/logo.jpg"
+            alt="Wallet Roast Logo"
+            className="h-16 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
+          />
+        </div>
+
+        {/* Wallet Connection (Top Right) */}
+        <div className="flex-shrink-0">
+          {!isConnected ? (
+            <div className="flex items-center gap-4 bg-charcoal-800/80 backdrop-blur-sm p-3 rounded-xl border border-charcoal-700/50 shadow-xl">
+              <div className="text-right hidden sm:block">
+                <h2 className="font-display text-sm font-semibold text-charcoal-100">
+                  Ready to get roasted?
+                </h2>
+                <p className="text-charcoal-500 text-xs">
+                  Connect your wallet to begin
+                </p>
+              </div>
+              <WalletModal />
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 bg-charcoal-800/80 backdrop-blur-sm p-3 rounded-xl border border-charcoal-700/50 shadow-xl">
+              <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="flex flex-col items-end">
+                <span className="text-charcoal-400 text-xs font-medium">Connected</span>
+                <code className="text-charcoal-200 text-sm font-mono">
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
+                </code>
+              </div>
+              <button
+                onClick={() => disconnect()}
+                className="ml-2 text-ember-400 hover:text-ember-300 text-xs font-bold uppercase tracking-wider transition-colors"
+              >
+                Disconnect
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Main content */}
-      <div className="relative flex-1 flex flex-col items-center justify-center px-6 py-12">
+      <div className="relative flex-1 flex flex-col items-center justify-start px-6 py-8">
         <div className="w-full max-w-xl space-y-10">
 
           {/* Header */}
           <CampfireHeader />
 
-          {/* Main card */}
-          <div className="animated-border-container rounded-2xl">
-            <div className="animated-border-content card p-8 space-y-6 animate-in" style={{ animationDelay: "0.1s" }}>
-              {!isConnected ? (
-                <div className="flex flex-col items-center space-y-6 py-4">
-                  <div className="text-center space-y-2">
-                    <h2 className="font-display text-xl font-semibold text-charcoal-100">
-                      Ready to get roasted?
-                    </h2>
-                    <p className="text-charcoal-500 text-sm">
-                      Connect your wallet to begin
-                    </p>
-                  </div>
-                  <WalletModal />
-                </div>
-              ) : (
+          {/* Main card (Only show when connected) */}
+          {isConnected && (
+            <div className="animated-border-container rounded-2xl">
+              <div className="animated-border-content card p-8 space-y-6 animate-in" style={{ animationDelay: "0.1s" }}>
                 <div className="space-y-6">
-                  {/* Connected wallet display */}
-                  <div className="flex items-center justify-between p-4 bg-charcoal-800/50 rounded-xl border border-charcoal-700/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-charcoal-400 text-sm font-medium">Connected</span>
-                      <code className="text-charcoal-300 text-sm font-mono">
-                        {address?.slice(0, 6)}...{address?.slice(-4)}
-                      </code>
-                    </div>
-                    <button
-                      onClick={() => disconnect()}
-                      className="text-ember-400 hover:text-ember-300 text-sm font-medium transition-colors"
-                    >
-                      Disconnect
-                    </button>
-                  </div>
-
                   {isLoading ? (
                     <LoadingRoast />
                   ) : !roast ? (
@@ -298,8 +313,6 @@ export default function Home() {
                       )}
 
                       {/* Premium section */}
-
-
                       <div className="grid gap-4">
                         <PaymentButton
                           type="premium"
@@ -332,17 +345,21 @@ export default function Home() {
                     />
                   )}
                 </div>
-              )}
+              </div>
             </div>
+          )}
+
+          {/* Dumpster King Image */}
+          <div className="w-full flex justify-center animate-in" style={{ animationDelay: "0.2s" }}>
+            <img
+              src="/dumpster-king.jpg"
+              alt="King of the Dumpster"
+              className="w-full max-w-md rounded-2xl shadow-2xl border-2 border-charcoal-700/50 hover:scale-[1.02] transition-transform duration-500"
+            />
           </div>
 
           {/* Live Leaderboard */}
           <LiveLeaderboard />
-
-          {/* Hall of Shame */}
-          <div className="animate-in" style={{ animationDelay: "0.2s" }}>
-            <HallOfShame />
-          </div>
 
           {/* Footer */}
           <footer className="text-center text-charcoal-600 text-xs animate-in space-y-2" style={{ animationDelay: "0.3s" }}>
