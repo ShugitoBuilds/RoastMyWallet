@@ -216,7 +216,7 @@ export default function Home() {
           <img
             src="/logo.jpg"
             alt="Wallet Roast Logo"
-            className="h-16 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
+            className="h-48 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
           />
         </div>
 
@@ -363,7 +363,7 @@ export default function Home() {
 
           {/* Footer */}
           <footer className="text-center text-charcoal-600 text-xs animate-in space-y-2" style={{ animationDelay: "0.3s" }}>
-            <p>Not financial advice. For entertainment only. You are responsible for your own keys.</p>
+            <p>© 2025 Wallet Roast. All rights reserved. | <a href="/terms" className="hover:text-charcoal-400 underline transition-colors">Terms of Service</a></p>
           </footer>
         </div>
       </div>
