@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateRoast } from "@/lib/roast-generator";
 import { getTokenBalances } from "@/lib/tokens";
 import { createScorecard } from "@/lib/scorecard";
-import { saveRoast, isSupabaseConfigured } from "@/lib/supabase";
+import { saveRoast, isSupabaseConfigured, getActiveSeason, updatePlayer, logRoastEvent, checkRoastCooldown, incrementPot } from "@/lib/supabase";
+import { calculatePoints } from "@/lib/game-logic";
 import { createPublicClient, http, fallback } from "viem";
 import { mainnet } from "viem/chains";
 
@@ -78,11 +79,51 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // --- GAMIFICATION LOGIC ---
+    // Default roaster to target if not provided (self-roast)
+    const roaster = body.roasterAddress || address;
+
+    // 1. Anti-Spam Check
+    if (isSupabaseConfigured()) {
+      const isSpam = await checkRoastCooldown(roaster, address);
+      if (isSpam) {
+        return NextResponse.json(
+          { error: "You've already roasted this wallet in the last 24 hours. Give them a break!" },
+          { status: 429 }
+        );
+      }
+    }
+
     // Generate the roast
     const roast = await generateRoast({
       address: address as string,
       type: roastType as "free" | "premium" | "friend",
     });
+
+    // 2. Game State Updates
+    if (isSupabaseConfigured()) {
+      try {
+        const activeSeason = await getActiveSeason();
+
+        if (activeSeason) {
+          // Calculate Points
+          const isFriendRoast = roaster.toLowerCase() !== (address as string).toLowerCase();
+          const { points } = calculatePoints(new Date(activeSeason.start_time), isFriendRoast);
+
+          // Update Player
+          await updatePlayer(roaster, points);
+
+          // Log Event
+          await logRoastEvent(roaster, address as string, roastType, points);
+
+          // Increment Pot (e.g., $0.50 per roast)
+          await incrementPot(activeSeason.id, 0.50);
+        }
+      } catch (gameError) {
+        console.error("Error updating game state:", gameError);
+        // Don't fail the roast if game logic fails
+      }
+    }
 
     // Get token data for scorecard
     let scorecard = null;

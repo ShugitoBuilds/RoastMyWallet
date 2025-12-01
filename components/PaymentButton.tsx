@@ -164,6 +164,7 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: roastAddress,
+          roasterAddress: address,
           type: type === "premium" ? "premium" : "friend"
         }),
       });

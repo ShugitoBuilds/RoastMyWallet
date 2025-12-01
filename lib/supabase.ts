@@ -176,6 +176,201 @@ export async function submitToLeaderboard(id: string): Promise<boolean> {
   return true;
 }
 
+// --- GAMIFICATION HELPERS ---
+
+// Get active season
+export async function getActiveSeason() {
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("seasons")
+    .select("*")
+    .eq("is_active", true)
+    .single();
+
+  if (error) {
+    console.error("Error fetching active season:", error);
+    return null;
+  }
+  return data;
+}
+
+// Get player data
+export async function getPlayer(address: string) {
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from("players")
+    .select("*")
+    .eq("wallet_address", address)
+    .single();
+
+  if (error && error.code !== 'PGRST116') { // Ignore not found error
+    console.error("Error fetching player:", error);
+  }
+  return data;
+}
+
+// Update player points and stats
+export async function updatePlayer(address: string, pointsToAdd: number) {
+  if (!supabase) return null;
+
+  // First try to get existing player
+  const player = await getPlayer(address);
+
+  if (player) {
+    const { error } = await supabase
+      .from("players")
+      .update({
+        current_season_points: (player.current_season_points || 0) + pointsToAdd,
+        total_roasts: (player.total_roasts || 0) + 1,
+        last_active_timestamp: new Date().toISOString()
+      })
+      .eq("wallet_address", address);
+
+    if (error) console.error("Error updating player:", error);
+  } else {
+    // Create new player
+    const { error } = await supabase
+      .from("players")
+      .insert({
+        wallet_address: address,
+        current_season_points: pointsToAdd,
+        total_roasts: 1,
+        last_active_timestamp: new Date().toISOString()
+      });
+
+    if (error) console.error("Error creating player:", error);
+  }
+}
+
+// Log a roast event
+export async function logRoastEvent(
+  roaster: string,
+  target: string,
+  type: string,
+  points: number
+) {
+  if (!supabase) return;
+
+  const { error } = await supabase
+    .from("roast_logs")
+    .insert({
+      roaster_address: roaster,
+      target_address: target,
+      roast_type: type,
+      points_awarded: points
+    });
+
+  if (error) console.error("Error logging roast:", error);
+}
+
+// Check for spam (roasting same target within 24h)
+export async function checkRoastCooldown(roaster: string, target: string): Promise<boolean> {
+  if (!supabase) return false;
+
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+  const { data, error } = await supabase
+    .from("roast_logs")
+    .select("id")
+    .eq("roaster_address", roaster)
+    .eq("target_address", target)
+    .gt("created_at", twentyFourHoursAgo)
+    .limit(1);
+
+  if (error) {
+    console.error("Error checking cooldown:", error);
+    return false;
+  }
+
+  return data && data.length > 0;
+}
+
+// Increment season pot
+export async function incrementPot(seasonId: string, amount: number) {
+  if (!supabase) return;
+
+  // Note: Supabase doesn't have a simple atomic increment without a function, 
+  // so we'll fetch and update for now. In high scale, use an RPC.
+  const { data: season } = await supabase
+    .from("seasons")
+    .select("current_pot_size")
+    .eq("id", seasonId)
+    .single();
+
+  if (season) {
+    const newPot = (Number(season.current_pot_size) || 0) + amount;
+    await supabase
+      .from("seasons")
+      .update({ current_pot_size: newPot })
+      .eq("id", seasonId);
+  }
+}
+
+// Perform "Throw Shade" attack
+export async function performAttack(attacker: string, victim: string, cost: number): Promise<{ success: boolean; stolen: number; error?: string }> {
+  if (!supabase) return { success: false, stolen: 0, error: "Database not configured" };
+
+  // 1. Get Victim Points
+  const victimData = await getPlayer(victim);
+  if (!victimData) return { success: false, stolen: 0, error: "Victim not found" };
+
+  const victimPoints = victimData.current_season_points || 0;
+  if (victimPoints <= 0) return { success: false, stolen: 0, error: "Victim has no points to steal" };
+
+  // 2. Calculate Steal Amount (5% capped at 500)
+  const stealAmount = Math.min(500, Math.floor(victimPoints * 0.05));
+  if (stealAmount <= 0) return { success: false, stolen: 0, error: "Point value too low to steal" };
+
+  // 3. Execute Updates (Sequential for now, RPC recommended for prod)
+
+  // Deduct from Victim
+  const { error: deductError } = await supabase
+    .from("players")
+    .update({ current_season_points: victimPoints - stealAmount })
+    .eq("wallet_address", victim);
+
+  if (deductError) return { success: false, stolen: 0, error: "Failed to deduct points" };
+
+  // Add to Attacker
+  const attackerData = await getPlayer(attacker);
+  const attackerPoints = attackerData?.current_season_points || 0;
+
+  await supabase
+    .from("players")
+    .update({ current_season_points: attackerPoints + stealAmount })
+    .eq("wallet_address", attacker); // If attacker doesn't exist, this might fail if we don't upsert. 
+  // Actually updatePlayer handles upsert, but here we are using raw update. 
+  // Let's use updatePlayer helper logic or just upsert.
+  // Better to use upsert here to be safe.
+
+  if (!attackerData) {
+    await supabase.from("players").insert({
+      wallet_address: attacker,
+      current_season_points: stealAmount,
+      total_roasts: 0
+    });
+  } else {
+    await supabase
+      .from("players")
+      .update({ current_season_points: attackerPoints + stealAmount })
+      .eq("wallet_address", attacker);
+  }
+
+  // Log Attack
+  await supabase
+    .from("attacks")
+    .insert({
+      attacker_address: attacker,
+      victim_address: victim,
+      points_stolen: stealAmount,
+      cost_amount: cost
+    });
+
+  return { success: true, stolen: stealAmount };
+}
+
 /*
 SQL to create the roasts table in Supabase:
 

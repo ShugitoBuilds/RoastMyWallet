@@ -112,6 +112,9 @@ function SocialFireIcon({ className }: { className?: string }) {
 
 import { AdminAccess } from "@/components/AdminAccess";
 import { BackgroundFlames } from "@/components/BackgroundFlames";
+import { CampfireHeader } from "@/components/CampfireHeader";
+import { LiveLeaderboard } from "@/components/LiveLeaderboard";
+
 
 export default function Home() {
   const { isConnected, address } = useAccount();
@@ -129,7 +132,7 @@ export default function Home() {
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, type: "free", submitToLeaderboard: true }),
+        body: JSON.stringify({ address, roasterAddress: address, type: "free", submitToLeaderboard: true }),
       });
       const data = await response.json();
       setRoast(data.roast);
@@ -152,7 +155,7 @@ export default function Home() {
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, type: "premium", submitToLeaderboard: true }),
+        body: JSON.stringify({ address, roasterAddress: address, type: "premium", submitToLeaderboard: true }),
       });
       const data = await response.json();
       setRoast(data.roast);
@@ -178,7 +181,7 @@ export default function Home() {
       const response = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: testFriendAddress, type: "friend" }),
+        body: JSON.stringify({ address: testFriendAddress, roasterAddress: address, type: "friend" }),
       });
       const data = await response.json();
       setRoast(data.roast);
@@ -212,18 +215,7 @@ export default function Home() {
         <div className="w-full max-w-xl space-y-10">
 
           {/* Header */}
-          <header className="text-center space-y-4 animate-in">
-            <div className="inline-flex items-center justify-center gap-3 mb-2">
-              <RoaringFireIcon className="w-12 h-12 animate-pulse-slow" />
-            </div>
-            <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-shimmer">
-              <span className="text-charcoal-100">Wallet </span>
-              <span className="text-gradient glow-text">Roast</span>
-            </h1>
-            <p className="text-charcoal-400 text-lg max-w-md mx-auto leading-relaxed">
-              Connect your wallet securely, and get ruthlessly roasted based on your wallet holdings!
-            </p>
-          </header>
+          <CampfireHeader />
 
           {/* Main card */}
           <div className="animated-border-container rounded-2xl">
@@ -343,6 +335,9 @@ export default function Home() {
               )}
             </div>
           </div>
+
+          {/* Live Leaderboard */}
+          <LiveLeaderboard />
 
           {/* Hall of Shame */}
           <div className="animate-in" style={{ animationDelay: "0.2s" }}>
