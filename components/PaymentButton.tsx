@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, useSwitchChain, useChainId } from "wagmi";
 import { parseUnits } from "viem";
 import { base } from "viem/chains";
 import { NetworkGuard } from "./NetworkGuard";
@@ -130,6 +130,9 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
     hash,
   });
 
+  const { switchChainAsync } = useSwitchChain();
+  const chainId = useChainId();
+
   const handlePayment = async () => {
     if (!isConnected) return;
 
@@ -142,6 +145,18 @@ export function PaymentButton({ type, address, onSuccess }: PaymentButtonProps) 
     setIsProcessing(true);
 
     try {
+      // Force switch to Base if not already on it
+      if (chainId !== base.id) {
+        try {
+          await switchChainAsync({ chainId: base.id });
+        } catch (switchError) {
+          console.error("Failed to switch network:", switchError);
+          setIsProcessing(false);
+          alert("Please switch your wallet to Base network to continue.");
+          return;
+        }
+      }
+
       writeContract({
         address: USDC_ADDRESS,
         abi: [
