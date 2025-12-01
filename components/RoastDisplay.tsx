@@ -265,43 +265,33 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="p-3 rounded-lg bg-charcoal-900/50">
-              <p className="text-xs text-charcoal-500 mb-1">Top Bagholder</p>
-              <p className="text-sm font-semibold text-ember-400">${scorecard.topBagholder}</p>
-            </div>
-            <div className="p-3 rounded-lg bg-charcoal-900/50">
-              <p className="text-xs text-charcoal-500 mb-1">Time Until Broke</p>
-              <p className="text-sm font-semibold text-flame-400">{scorecard.timeUntilBroke}</p>
-            </div>
-            <div className="p-3 rounded-lg bg-charcoal-900/50">
-              <p className="text-xs text-charcoal-500 mb-1">Tokens</p>
-              <p className="text-sm font-semibold text-charcoal-300">{scorecard.tokenCount}</p>
-            </div>
+          {/* Stats - Tokens Only */}
+          <div className="mt-6">
+            <details className="group">
+              <summary className="list-none cursor-pointer select-none flex justify-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-charcoal-900/50 hover:bg-charcoal-900 transition-colors border border-charcoal-800">
+                  <span className="text-sm text-charcoal-400">Tokens</span>
+                  <span className="text-sm font-semibold text-charcoal-200">{scorecard.tokenCount}</span>
+                  <svg className="w-4 h-4 text-charcoal-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </summary>
+              <div className="mt-3 p-3 rounded-xl bg-charcoal-900/30 border border-charcoal-800/50 mx-auto max-w-sm animate-in fade-in slide-in-from-top-2">
+                <div className="flex flex-wrap justify-center gap-2">
+                  {scorecard.tokenSummary?.split(', ').map((token, idx) => (
+                    <span key={idx} className="inline-flex items-center px-2 py-1 rounded-md bg-charcoal-800 text-xs text-charcoal-400 border border-charcoal-700/50">
+                      {token}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       )}
 
-      {/* Detected Tokens (for debugging/transparency) */}
-      {scorecard && scorecard.tokenCount > 0 && (
-        <details className="p-4 rounded-xl bg-charcoal-800/20 border border-charcoal-700/30">
-          <summary className="cursor-pointer select-none text-sm font-semibold text-charcoal-400 hover:text-charcoal-300 transition-colors flex items-center gap-2">
-            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
-            </svg>
-            Detected Tokens ({scorecard.tokenCount})
-          </summary>
-          <div className="mt-3 space-y-1 text-xs text-charcoal-500">
-            {scorecard.tokenSummary?.split(', ').map((token: string, idx: number) => (
-              <div key={idx} className="flex items-center gap-2 py-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/50"></div>
-                <span>{token}</span>
-              </div>
-            ))}
-          </div>
-        </details>
-      )}
+
 
       {/* Actions */}
       <div className="flex gap-3">

@@ -195,19 +195,11 @@ Get roasted at ${baseUrl}`;
                                 </div>
                             </div>
 
-                            {/* Stats */}
-                            <div className="grid grid-cols-3 gap-4 text-center">
-                                <div className="p-3 rounded-lg bg-charcoal-900/50">
-                                    <p className="text-xs text-charcoal-500 mb-1">Top Bagholder</p>
-                                    <p className="text-sm font-semibold text-ember-400">${roast.top_bagholder}</p>
-                                </div>
-                                <div className="p-3 rounded-lg bg-charcoal-900/50">
-                                    <p className="text-xs text-charcoal-500 mb-1">Time Until Broke</p>
-                                    <p className="text-sm font-semibold text-flame-400">{roast.time_until_broke}</p>
-                                </div>
-                                <div className="p-3 rounded-lg bg-charcoal-900/50">
-                                    <p className="text-xs text-charcoal-500 mb-1">Tokens</p>
-                                    <p className="text-sm font-semibold text-charcoal-300">{roast.token_count}</p>
+                            {/* Stats - Tokens Only */}
+                            <div className="mt-6 flex justify-center">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-charcoal-900/50 border border-charcoal-800">
+                                    <span className="text-sm text-charcoal-400">Tokens</span>
+                                    <span className="text-sm font-semibold text-charcoal-200">{roast.token_count}</span>
                                 </div>
                             </div>
                         </div>
@@ -225,8 +217,8 @@ Get roasted at ${baseUrl}`;
                             <button
                                 onClick={handleCopy}
                                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-display font-semibold transition-all duration-300 ${copied
-                                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                                        : "bg-charcoal-800/50 text-charcoal-300 border border-charcoal-700/50 hover:bg-charcoal-800 hover:text-white"
+                                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                    : "bg-charcoal-800/50 text-charcoal-300 border border-charcoal-700/50 hover:bg-charcoal-800 hover:text-white"
                                     }`}
                             >
                                 {copied ? (
