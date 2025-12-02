@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ScorecardData } from "@/lib/scorecard";
+import { GameDashboard } from "./game/GameDashboard";
 // import { MintButton } from "./MintButton"; // Disabled for MVP
 
 interface RoastDisplayProps {
@@ -349,14 +350,17 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
         <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${config.gradient}`} />
 
         <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
-          <p className="text-charcoal-200 leading-relaxed whitespace-pre-wrap font-body">
-            {displayedRoast}
-            <span className="animate-pulse text-flame-500">|</span>
-          </p>
+          {displayedRoast}
+          <span className="animate-pulse text-flame-500">|</span>
         </p>
       </div>
 
-
+      {/* Game Dashboard */}
+      {scorecard && (
+        <div className="mt-8 border-t border-charcoal-800 pt-8">
+          <GameDashboard walletAddress={scorecard.walletAddress} />
+        </div>
+      )}
 
       {/* NFT Minting - Disabled for MVP */}
       {/* {scorecard && (
