@@ -36,8 +36,9 @@ Think you can do worse? Get roasted:`;
 
   // Warpcast compose URL with text and embeds
   const params = new URLSearchParams();
-  params.append("text", text);
-  params.append("embeds[]", roastPageUrl);
+  // Add link to text
+  params.append("text", `${text}\n\n${roastPageUrl}`);
+  // Only embed the image
   params.append("embeds[]", imageUrl);
 
   return `https://warpcast.com/~/compose?${params.toString()}`;
