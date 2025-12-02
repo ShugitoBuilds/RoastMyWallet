@@ -86,12 +86,12 @@ export async function POST(request: NextRequest) {
     // 1. Anti-Spam Check
     if (isSupabaseConfigured()) {
       const isSpam = await checkRoastCooldown(roaster, address);
-      if (isSpam) {
-        return NextResponse.json(
-          { error: "You've already roasted this wallet in the last 24 hours. Give them a break!" },
-          { status: 429 }
-        );
-      }
+      // if (isSpam) {
+      //   return NextResponse.json(
+      //     { error: "You've already roasted this wallet in the last 24 hours. Give them a break!" },
+      //     { status: 429 }
+      //   );
+      // }
     }
 
     // Generate the roast

@@ -216,7 +216,7 @@ export default function Home() {
           <img
             src="/logo.jpg"
             alt="Wallet Roast Logo"
-            className="h-48 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
+            className="h-14 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
           />
         </div>
 
@@ -332,9 +332,7 @@ export default function Home() {
                         />
                       </div>
 
-                      <p className="text-center text-charcoal-600 text-xs">
-                        💡 You will only be charged $1 USDC for any transactions.
-                      </p>
+
                     </div>
                   ) : (
                     <RoastDisplay
