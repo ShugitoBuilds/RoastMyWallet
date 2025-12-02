@@ -164,22 +164,21 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
 
   const handleShareWarpcast = () => {
     const oneLiner = getOneLiner(roast);
-    const gradeEmoji = scorecard ? getGradeEmoji(scorecard.grade) : "💀";
 
     const intro = type === "friend"
       ? "I just ruthlessly roasted my friend's wallet 💀"
       : "I just got my wallet ruthlessly roasted 💀";
 
-    const text = scorecard
-      ? `${intro}\n\n${oneLiner}\n\nGrade: ${scorecard.grade} ${gradeEmoji}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nThink you can do worse?`
-      : `${intro}\n\n${oneLiner}\n\nThink you can do worse?`;
+    const text = `${intro}\n\n${oneLiner}\n\nThink you can do worse?`;
 
     // Use roast ID for permalink if available, otherwise homepage
     const shareUrl = scorecard?.id
       ? `${window.location.origin}/roast/${scorecard.id}`
       : window.location.origin;
 
-    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}`;
+    const imageUrl = `${window.location.origin}/wallet-roast-share.jpg`;
+
+    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}&embeds[]=${encodeURIComponent(imageUrl)}`;
     window.open(url, "_blank");
     setShowShareMenu(false);
   };
@@ -191,15 +190,12 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
       : window.location.origin;
 
     const oneLiner = getOneLiner(roast);
-    const gradeEmoji = scorecard ? getGradeEmoji(scorecard.grade) : "💀";
 
     const intro = type === "friend"
       ? "I just ruthlessly roasted my friend's wallet 💀"
       : "I just got my wallet ruthlessly roasted 💀";
 
-    const text = scorecard
-      ? `${intro}\n\n${oneLiner}\n\nGrade: ${scorecard.grade} ${gradeEmoji}\nTop Bagholder: $${scorecard.topBagholder}\nTime Until Broke: ${scorecard.timeUntilBroke}\n\nGet roasted at`
-      : `${intro}\n\n${oneLiner}\n\nGet roasted at`;
+    const text = `${intro}\n\n${oneLiner}\n\nGet roasted at`;
 
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
