@@ -267,17 +267,13 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
 
           {/* Stats - Tokens Only */}
           <div className="mt-6">
-            <details className="group">
-              <summary className="list-none cursor-pointer select-none flex justify-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-charcoal-900/50 hover:bg-charcoal-900 transition-colors border border-charcoal-800">
-                  <span className="text-sm text-charcoal-400">Tokens</span>
-                  <span className="text-sm font-semibold text-charcoal-200">{scorecard.tokenCount}</span>
-                  <svg className="w-4 h-4 text-charcoal-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </div>
-              </summary>
-              <div className="mt-3 p-3 rounded-xl bg-charcoal-900/30 border border-charcoal-800/50 mx-auto max-w-sm animate-in fade-in slide-in-from-top-2">
+            <div className="flex flex-col items-center gap-3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-charcoal-900/50 border border-charcoal-800">
+                <span className="text-sm text-charcoal-400">Tokens</span>
+                <span className="text-sm font-semibold text-charcoal-200">{scorecard.tokenCount}</span>
+              </div>
+
+              <div className="p-3 rounded-xl bg-charcoal-900/30 border border-charcoal-800/50 mx-auto max-w-sm w-full">
                 <div className="flex flex-wrap justify-center gap-2">
                   {scorecard.tokenSummary?.split(', ').map((token, idx) => (
                     <span key={idx} className="inline-flex items-center px-2 py-1 rounded-md bg-charcoal-800 text-xs text-charcoal-400 border border-charcoal-700/50">
@@ -286,7 +282,7 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
                   ))}
                 </div>
               </div>
-            </details>
+            </div>
           </div>
         </div>
       )}

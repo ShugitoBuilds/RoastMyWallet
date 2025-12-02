@@ -216,7 +216,7 @@ export default function Home() {
           <img
             src="/logo.jpg"
             alt="Wallet Roast Logo"
-            className="h-14 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
+            className="h-28 w-auto rounded-lg shadow-lg border border-charcoal-700/50"
           />
         </div>
 

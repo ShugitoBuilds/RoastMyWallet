@@ -26,20 +26,19 @@ export function getScorecardImageUrl(scorecard: ScorecardData): string {
 export function getWarpcastShareUrl(scorecard: ScorecardData): string {
   const text = `I just got roasted by @roastmywallet 🔥
 
-My portfolio grade: ${scorecard.grade}
-Top bagholder: $${scorecard.topBagholder}
-Time until broke: ${scorecard.timeUntilBroke}
-
 Think you can do worse? Get roasted:`;
 
   // Use the dynamic roast page URL for embedding
   const roastPageUrl = getRoastPageUrl(scorecard);
 
+  // Static image URL
+  const imageUrl = `${BASE_URL}/wallet-roast-share.jpg`;
+
   // Warpcast compose URL with text and embeds
-  const params = new URLSearchParams({
-    text: text,
-    "embeds[]": roastPageUrl,
-  });
+  const params = new URLSearchParams();
+  params.append("text", text);
+  params.append("embeds[]", roastPageUrl);
+  params.append("embeds[]", imageUrl);
 
   return `https://warpcast.com/~/compose?${params.toString()}`;
 }
@@ -49,10 +48,6 @@ export function getTwitterShareUrl(scorecard: ScorecardData): string {
   const roastPageUrl = getRoastPageUrl(scorecard);
 
   const text = `I just got my crypto portfolio roasted 🔥
-
-Grade: ${scorecard.grade}
-Top bagholder: $${scorecard.topBagholder}
-Time until broke: ${scorecard.timeUntilBroke}
 
 Get roasted at`;
 
