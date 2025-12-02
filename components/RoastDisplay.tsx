@@ -178,7 +178,7 @@ export function RoastDisplay({ roast, type, scorecard, onReset }: RoastDisplayPr
 
     const imageUrl = `${window.location.origin}/wallet-roast-share.jpg`;
 
-    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(shareUrl)}&embeds[]=${encodeURIComponent(imageUrl)}`;
+    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text + "\n\n" + shareUrl)}&embeds[]=${encodeURIComponent(imageUrl)}`;
     window.open(url, "_blank");
     setShowShareMenu(false);
   };
